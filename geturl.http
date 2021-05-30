@@ -1,0 +1,9 @@
+POST http://localhost:8080/url
+Content-Type: application/json
+
+{
+  "url" : "https://www.w3schools.com/howto/howto_make_a_website.asp",
+  "depth" : 1
+}
+
+###

@@ -6,15 +6,19 @@ import (
 	"sync"
 )
 
+//MyAnalysisLog is the logger for analysisapp
 type MyAnalysisLog struct {
 	l *log.Logger
 }
 
+//Analysis will return the MyAnalysisLog logger
 func Analysis(l *log.Logger) *MyAnalysisLog{
 	return &MyAnalysisLog{l: l}
 }
+
 var wg sync.WaitGroup
 
+//ApplyRules will initiate rule application
 func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	l.l.Println("Initiating Rules Check....")
 	var ruleResults Response

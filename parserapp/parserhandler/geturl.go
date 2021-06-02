@@ -9,14 +9,17 @@ import (
 	"webparser/parserapp/parser"
 )
 
+//NewLogger is the logger for the GET function
 type NewLogger struct {
 	l *log.Logger
 }
 
+//GetNewLogger returns the NewLogger handler
 func GetNewLogger(l *log.Logger) *NewLogger {
 	return &NewLogger{l: l}
 }
 
+//GetURLResp will return the WCAG2.1 guidelines result for a URL
 func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 	timeStart := time.Now()
 	req := &parser.MyURLReq{}

@@ -17,58 +17,72 @@ func isSpan(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "span"
 }
 
+//isH1 will validate an H1 tag
 func isH1(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "h1"
 }
 
+//isH2 will validate an H2 tag
 func isH2(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "h2"
 }
 
+//isH3 will validate an H3 tag
 func isH3(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "h3"
 }
 
+//isH4 will validate an H4 tag
 func isH4(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "h4"
 }
 
+//isH5 will validate an H5 tag
 func isH5(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "h5"
 }
 
+//isH6 will validate an H6 tag
 func isH6(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "h6"
 }
 
+//isParagraph will validate an Paragraph tag
 func isParagraph(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "p"
 }
 
+//isImage will validate an Image tag
 func isImage(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "img"
 }
 
+//isUL will validate an UL tag
 func isUL(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "ul"
 }
 
+//isOL will validate an OL tag
 func isOL(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "ol"
 }
 
+//isLI will validate an LI tag
 func isLI(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "li"
 }
 
+//isScript will validate an Script tag
 func isScript(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "script"
 }
 
+//isDocTypeOrDocumentType will validate if a tag is DocType or DocumentType
 func isDocTypeOrDocumentType(n *html.Node) bool {
 	return n.Type == html.DocumentNode || n.Type == html.DoctypeNode
 }
 
+//isTextNode will validate if node is TextNode
 func isTextNode(n *html.Node) bool {
 	if n.Type == html.TextNode && n.DataAtom == 0 {
 		return true

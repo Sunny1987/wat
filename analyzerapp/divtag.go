@@ -1,5 +1,6 @@
 package analyzerapp
 
+//Divtag is the Div based rule results
 type Divtag struct {
 
 	Div string

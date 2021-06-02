@@ -2,6 +2,7 @@ package analyzerapp
 
 import "golang.org/x/net/html"
 
+//attributeSearch will respond if the attribute is present
 func attributeSearch(attrList []html.Attribute, key string) bool {
 	for _, att := range attrList {
 		if att.Key == key {
@@ -11,6 +12,7 @@ func attributeSearch(attrList []html.Attribute, key string) bool {
 	return false
 }
 
+//attributeCheckVal will respond if the attribute is present and check its value
 func attributeCheckVal(attrList []html.Attribute, key string,val string) bool {
 	for _, att := range attrList {
 		if att.Key == key && att.Val == val {
@@ -20,6 +22,7 @@ func attributeCheckVal(attrList []html.Attribute, key string,val string) bool {
 	return false
 }
 
+//attributeCheckValEmpty will respond if the attribute is present and value is empty
 func attributeCheckValEmpty(attrList []html.Attribute, key string) bool {
 	for _, att := range attrList {
 		if att.Key == key && att.Val != "" {
@@ -29,18 +32,22 @@ func attributeCheckValEmpty(attrList []html.Attribute, key string) bool {
 	return false
 }
 
+//hasNoChild will check if node has child
 func hasNoChild(n *html.Node) bool {
 	return n.FirstChild == nil
 }
 
+//hasChildren will check if node has children
 func hasChildren(n *html.Node) bool {
 	return n.FirstChild != nil && n.FirstChild != n.LastChild
 }
 
+//hasOneChild will check if node has only one child
 func hasOneChild(n *html.Node) bool {
 	return n.FirstChild != nil && n.FirstChild == n.LastChild
 }
 
+//nodeText will retrieve node text
 func nodeText(n *html.Node) string {
 	var str string
 	for _, a := range n.Attr {

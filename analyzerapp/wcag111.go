@@ -5,8 +5,6 @@ import (
 	"log"
 )
 
-var results map[string]*html.Node
-
 //divRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Divtag) divRulesWCAG111(div *html.Node, l *log.Logger) {
 
@@ -43,6 +41,7 @@ func aria6(div *html.Node) bool {
 	return false
 }
 
+//aria10 is for ARIA10 div validation
 func aria10(div *html.Node) bool {
 
 	if hasChildren(div){

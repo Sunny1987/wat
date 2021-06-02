@@ -1,26 +1,62 @@
 package analyzerapp
 
-import "golang.org/x/net/html"
+import (
+	"golang.org/x/net/html"
+	"log"
+)
 
 var results map[string]*html.Node
 
 //divRulesWCAG111 will check all WCAG1.1.1 techniques
-func (d *Divtag) divRulesWCAG111(div *html.Node,index int) {
+func (d *Divtag) divRulesWCAG111(div *html.Node, l *log.Logger) {
+
+	// creating div object
+	d.Div = nodeText(div)
 
 	//ARIA6
-	if stat,node := aria6(div,index); stat {
-		d.Wc111Aria6 = node
+	l.Println("Starting processing : ARIA6")
+	if stat := aria6(div); stat {
+		d.Wc111Aria6 = "fail"
+	} else {
+		d.Wc111Aria6 = "pass"
+	}
+
+
+	//ARIA10
+	l.Println("Starting processing : ARIA10")
+	if stat := aria10(div); !stat {
+		d.Wc111Aria10 = "fail"
+	} else {
+		d.Wc111Aria10 = "pass"
 	}
 
 }
 
 
 //aria6 is for ARIA6 div validation
-func aria6(div *html.Node,index int) (bool,*html.Node) {
+func aria6(div *html.Node) bool {
 	if attributeSearch(div.Attr,"role") {
 		if attributeCheckValEmpty(div.Attr,"aria-label") {
-			return true,div
+			return true
 		}
 	}
-	return false,nil
+	return false
 }
+
+func aria10(div *html.Node) bool {
+
+	if hasChildren(div){
+		for c := div.FirstChild; c!= nil ; c= c.NextSibling {
+			if attributeSearch(c.Attr,"src") {
+				if attributeSearch(div.Attr,"aria-labelledby") {
+					return false
+				}
+			}
+		}
+	}
+
+	return true
+
+}
+
+

@@ -42,12 +42,13 @@ func divAnalysis(l *log.Logger, nodeMap map[string][]*html.Node ) map[string][]D
 
 	var divIssues = make(map[string][]Divtag)
 	var divList []Divtag
-	for i,div := range divs {
+	for _,div := range divs {
 		var divTag Divtag
-		divTag.divRulesWCAG111(div,i)
+		divTag.divRulesWCAG111(div,l)
+		l.Printf("divTag : %v",divTag)
 		divList = append(divList,divTag)
 	}
-	l.Println(divList)
+	l.Printf("divList: %v\n",divList)
 	divIssues["div"] = divList
 
 	return divIssues

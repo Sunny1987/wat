@@ -2,7 +2,7 @@ POST http://localhost:8080/url
 Content-Type: application/json
 
 {
-  "url" : "https://www.w3schools.com/howto/howto_make_a_website.asp",
+  "url" : "https://www.w3.org/WAI/WCAG21/working-examples/aria-labelledby-description-complex-graphic/",
   "depth" : 1
 }
 

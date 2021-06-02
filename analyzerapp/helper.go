@@ -28,3 +28,34 @@ func attributeCheckValEmpty(attrList []html.Attribute, key string) bool {
 	}
 	return false
 }
+
+func hasNoChild(n *html.Node) bool {
+	return n.FirstChild == nil
+}
+
+func hasChildren(n *html.Node) bool {
+	return n.FirstChild != nil && n.FirstChild != n.LastChild
+}
+
+func hasOneChild(n *html.Node) bool {
+	return n.FirstChild != nil && n.FirstChild == n.LastChild
+}
+
+func nodeText(n *html.Node) string {
+	var str string
+	for _, a := range n.Attr {
+		s := a.Key + "=" + a.Val + " "
+		str += s
+	}
+
+	var res string
+
+	switch n.Data {
+	case "div":
+		res = "<div " +str + ">" + n.FirstChild.Data +"</div>"
+
+
+	}
+
+	return res
+}

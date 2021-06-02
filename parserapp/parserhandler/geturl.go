@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 	"webparser/parserapp/parser"
 )
 
@@ -17,6 +18,7 @@ func GetNewLogger(l *log.Logger) *NewLogger {
 }
 
 func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
+	timeStart := time.Now()
 	req := &parser.MyURLReq{}
 	json.NewDecoder(r.Body).Decode(req)
 	resp, err := http.Get(req.URLFromReq)
@@ -34,5 +36,6 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 		n.l.Println(err)
 	}
 	fmt.Fprintln(rw,string(rep))
+	n.l.Printf("Query completed in %v\n",time.Since(timeStart))
 
 }

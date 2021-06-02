@@ -2,18 +2,6 @@ package parser
 
 import "golang.org/x/net/html"
 
-func hasNoChild(n *html.Node) bool {
-	return n.FirstChild == nil
-}
-
-func hasChildren(n *html.Node) bool {
-	return n.FirstChild != nil && n.FirstChild != n.LastChild
-}
-
-func hasOneChild(n *html.Node) bool {
-	return n.FirstChild != nil && n.FirstChild == n.LastChild
-}
-
 //isAnchor will validate an Anchor tag
 func isAnchor(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "a"

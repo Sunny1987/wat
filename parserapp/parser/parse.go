@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"sync"
+	"webparser/analyzerapp"
 )
 
 var wg sync.WaitGroup
@@ -14,10 +15,9 @@ type Link struct {
 	Text string
 }
 
-//var nodeMap map[string][]*html.Node
 
 //Parse will parse the response body
-func (ml *MyLogger) Parse(r io.Reader) {
+func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
 	//io.Copy(os.Stdout,r)
 	doc, err := html.Parse(r)
 	if err != nil {
@@ -26,7 +26,11 @@ func (ml *MyLogger) Parse(r io.Reader) {
 
 	//get all nodes in map
 	nodeMap := collectNodes(doc, ml.l)
-	_ = nodeMap
+
+	//initiate analysis
+	ml.l.Println("Initiating WCAG 2.1 analysis.....")
+	results := analyzerapp.Analysis(ml.l).ApplyRules(nodeMap)
+	return results
 
 }
 

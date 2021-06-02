@@ -2,6 +2,7 @@ package parserhandler
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"webparser/parserapp/parser"
@@ -26,6 +27,12 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 	logger := parser.GetMyLogger(n.l)
 
-	logger.Parse(resp.Body)
+	results := logger.Parse(resp.Body)
+	n.l.Println("Initiating the response....")
+	rep,err := json.MarshalIndent(results,""," ")
+	if err != nil {
+		n.l.Println(err)
+	}
+	fmt.Fprintln(rw,string(rep))
 
 }

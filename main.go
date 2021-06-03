@@ -28,7 +28,7 @@ func main() {
 	postRouter.HandleFunc("/url", parseHandler.GetURLResp)
 
 	//heroku related updates
-	port = ":"+port
+	port = ":" + port
 
 	prodServer := &http.Server{
 		Addr:         port,
@@ -40,7 +40,7 @@ func main() {
 	}
 
 	go func() {
-		myFigure := figure.NewFigure("Web Accessibility Tool", "graffiti", true)
+		myFigure := figure.NewFigure("Web Accessibility Tool", "", true)
 		myFigure.Print()
 		l.Println("Starting server at port 8080...")
 		if err := prodServer.ListenAndServe(); err != nil {

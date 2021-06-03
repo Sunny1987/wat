@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/common-nighthawk/go-figure"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -39,7 +40,9 @@ func main() {
 	}
 
 	go func() {
-		l.Println("Startinhg server at port 8080")
+		myFigure := figure.NewFigure("Web Accessibility Tool", "graffiti", true)
+		myFigure.Print()
+		l.Println("Starting server at port 8080...")
 		if err := prodServer.ListenAndServe(); err != nil {
 			l.Printf("Error starting server: %v", err)
 			os.Exit(1)

@@ -1,1 +1,1 @@
-web: bin/wat
+web: bin/webparser

@@ -1,4 +1,4 @@
-POST http://localhost:8080/url
+POST https://git.heroku.com/quiet-shore-61869.git/url
 Content-Type: application/json
 
 {

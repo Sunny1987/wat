@@ -12,6 +12,11 @@ import (
 )
 
 func main() {
+	//heroku related updates for port
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 
 	l := log.New(os.Stdout, "parser:", log.LstdFlags)
 	parseHandler := parserhandler.GetNewLogger(l)
@@ -21,8 +26,11 @@ func main() {
 	postRouter := serverMux.Methods("POST").Subrouter()
 	postRouter.HandleFunc("/url", parseHandler.GetURLResp)
 
+	//heroku related updates
+	port = ":"+port
+
 	prodServer := &http.Server{
-		Addr:         ":8080",
+		Addr:         port,
 		Handler:      serverMux,
 		ReadTimeout:  20 * time.Second,
 		WriteTimeout: 10 * time.Second,

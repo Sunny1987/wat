@@ -134,3 +134,75 @@ func filterImageNodes(n *html.Node) []*html.Node {
 	}
 	return retLnk
 }
+
+//filterInputNodes will give the list of divs
+func filterInputNodes(n *html.Node) []*html.Node {
+	if isInput(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterInputNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterButtonNodes will give the list of divs
+func filterButtonNodes(n *html.Node) []*html.Node {
+	if isButton(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterButtonNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterVideoNodes will give the list of divs
+func filterVideoNodes(n *html.Node) []*html.Node {
+	if isVideo(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterVideoNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterAudioNodes will give the list of divs
+func filterAudioNodes(n *html.Node) []*html.Node {
+	if isAudio(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterAudioNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterSelectNodes will give the list of divs
+func filterSelectNodes(n *html.Node) []*html.Node {
+	if isSelect(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterSelectNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterTextAreaNodes will give the list of divs
+func filterTextAreaNodes(n *html.Node) []*html.Node {
+	if isTextArea(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterTextAreaNodes(c)...)
+	}
+	return retLnk
+}

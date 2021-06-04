@@ -1,9 +1,0 @@
-POST https://quiet-shore-61869.herokuapp.com/url
-Content-Type: application/json
-
-{
-  "url" : "https://www.w3.org/WAI/WCAG21/working-examples/aria-labelledby-description-complex-graphic/",
-  "depth" : 1
-}
-
-###

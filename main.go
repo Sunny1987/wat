@@ -42,6 +42,8 @@ func main() {
 	go func() {
 		myFigure := figure.NewFigure("WAT", "", true)
 		myFigure.Print()
+		l.Println("version: 1.0.0")
+		l.Println("Author: Sabyasachi Roy")
 		l.Println("Starting server at port 8080...")
 		if err := prodServer.ListenAndServe(); err != nil {
 			l.Printf("Error starting server: %v", err)

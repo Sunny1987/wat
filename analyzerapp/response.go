@@ -2,5 +2,11 @@ package analyzerapp
 
 //Response is the response object for json
 type Response struct {
-	DivResults []Divtag `json:"divs"`
+	//Request parser.MyURLReq `json:"request"`
+	DivResults    []Divtag    `json:"divs"`
+	ButtonResults []Buttontag `json:"buttons"`
+	InputResults  []Inputtag  `json:"inputs"`
+	ImageResults  []Imgtag    `json:"images"`
+	VideoResults  []Videotag  `json:"videos"`
+	AudioResults  []Audiotag  `json:"audios"`
 }

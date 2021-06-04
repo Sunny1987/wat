@@ -15,7 +15,6 @@ type Link struct {
 	Text string
 }
 
-
 //Parse will parse the response body
 func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
 	//io.Copy(os.Stdout,r)
@@ -38,6 +37,7 @@ func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
 func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 	//List of link nodes
 	nodeMap := make(map[string][]*html.Node)
+
 	wg.Add(1)
 	go func() {
 		l.Println("Collecting all links...")
@@ -158,6 +158,72 @@ func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 		imgNodes := filterImageNodes(doc)
 		nodeMap["imgNodes"] = imgNodes
 		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all inputs...")
+		linkNodes := filterInputNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["inputNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all buttons...")
+		linkNodes := filterButtonNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["buttonNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all videos...")
+		linkNodes := filterVideoNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["videoNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all audio...")
+		linkNodes := filterAudioNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["audioNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all selects...")
+		linkNodes := filterSelectNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["selectNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all textareas...")
+		linkNodes := filterTextAreaNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["textareaNodes"] = linkNodes
+		}
+		wg.Done()
+
 	}()
 
 	wg.Wait()

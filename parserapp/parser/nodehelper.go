@@ -89,3 +89,33 @@ func isTextNode(n *html.Node) bool {
 	}
 	return false
 }
+
+//isInput will validate an Image tag
+func isInput(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "input"
+}
+
+//isVideo will validate an Image tag
+func isVideo(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "video"
+}
+
+//isVideo will validate an Image tag
+func isAudio(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "audio"
+}
+
+//isSelect will validate an Image tag
+func isSelect(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "select"
+}
+
+//isTextArea will validate an Image tag
+func isTextArea(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "textarea"
+}
+
+//isButton will validate an Image tag
+func isButton(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "button"
+}

@@ -13,6 +13,11 @@ import (
 )
 
 func main() {
+	//heroku related updates for port
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 
 	l := log.New(os.Stdout, "parser:", log.LstdFlags)
 	parseHandler := parserhandler.GetNewLogger(l)
@@ -22,8 +27,11 @@ func main() {
 	postRouter := serverMux.Methods("POST").Subrouter()
 	postRouter.HandleFunc("/url", parseHandler.GetURLResp)
 
+	//heroku related updates
+	port = ":" + port
+
 	prodServer := &http.Server{
-		Addr:         ":8080",
+		Addr:         port,
 		Handler:      serverMux,
 		ReadTimeout:  20 * time.Second,
 		WriteTimeout: 10 * time.Second,
@@ -32,9 +40,9 @@ func main() {
 	}
 
 	go func() {
-		myFigure := figure.NewFigure("Web Accessibility Tool", "graffiti", true)
+		myFigure := figure.NewFigure("WAT", "", true)
 		myFigure.Print()
-		l.Println("Starting server at port 8080")
+		l.Println("Starting server at port 8080...")
 		if err := prodServer.ListenAndServe(); err != nil {
 			l.Printf("Error starting server: %v", err)
 			os.Exit(1)

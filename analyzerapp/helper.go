@@ -59,35 +59,94 @@ func nodeText(n *html.Node) string {
 
 	switch n.Data {
 	case "div":
-		res = "<div " + str + ">" + n.FirstChild.Data + "</div>"
+		if hasChildren(n) {
+			res = "<div " + str + ">" + n.FirstChild.Data + "</div>"
+		} else {
+			res = "<div " + str + "/>"
+		}
+
 	case "button":
-		res = "<button " + str + ">" + n.FirstChild.Data + "</button>"
+		if hasChildren(n) {
+			res = "<button " + str + ">" + n.FirstChild.Data + "</button>"
+		} else {
+			res = "<button " + str + "/>"
+		}
+
 	case "input":
-		res = "<input " + str + ">" + n.FirstChild.Data + "</input>"
+		if hasChildren(n) {
+			res = "<button " + str + ">" + n.FirstChild.Data + "</button>"
+		} else {
+			res = "<input " + str + "/>"
+		}
+
 	case "img":
 		res = "<img " + str + ">" + "/>"
 	case "select":
 		res = "<select " + str + "/>"
 	case "textarea":
-		res = "<textarea " + str + ">" + n.FirstChild.Data + "</textarea>"
+		if hasChildren(n) {
+			res = "<textarea " + str + ">" + n.FirstChild.Data + "</textarea>"
+		} else {
+			res = "<textarea " + str + "/>"
+		}
 	case "a":
-		res = "<a " + str + ">" + n.FirstChild.Data + "</a>"
+		if hasChildren(n) {
+			res = "<a " + str + ">" + n.FirstChild.Data + "</a>"
+		} else {
+			res = "<a " + str + "/>"
+		}
 	case "span":
-		res = "<span " + str + ">" + n.FirstChild.Data + "</span>"
+		if hasChildren(n) {
+			res = "<span " + str + ">" + n.FirstChild.Data + "</span>"
+		} else {
+			res = "<span " + str + "/>"
+		}
 	case "h1":
-		res = "<h1 " + str + ">" + n.FirstChild.Data + "</h1>"
+		if hasChildren(n) {
+			res = "<h1 " + str + ">" + n.FirstChild.Data + "</h1>"
+		} else {
+			res = "<h1 " + str + "/>"
+		}
 	case "h2":
-		res = "<h2 " + str + ">" + n.FirstChild.Data + "</h2>"
+		if hasChildren(n) {
+			res = "<h2 " + str + ">" + n.FirstChild.Data + "</h2>"
+		} else {
+			res = "<h2 " + str + "/>"
+		}
 	case "h3":
-		res = "<h3 " + str + ">" + n.FirstChild.Data + "</h3>"
+		if hasChildren(n) {
+			res = "<h3 " + str + ">" + n.FirstChild.Data + "</h3>"
+		} else {
+			res = "<h3 " + str + "/>"
+		}
 	case "h4":
-		res = "<h4 " + str + ">" + n.FirstChild.Data + "</h4>"
+		if hasChildren(n) {
+			res = "<h4 " + str + ">" + n.FirstChild.Data + "</h4>"
+		} else {
+			res = "<h4 " + str + "/>"
+		}
+
 	case "h5":
-		res = "<h5 " + str + ">" + n.FirstChild.Data + "</h5>"
+		if hasChildren(n) {
+			res = "<h5 " + str + ">" + n.FirstChild.Data + "</h5>"
+		} else {
+			res = "<h5 " + str + "/>"
+		}
+
 	case "h6":
-		res = "<h6 " + str + ">" + n.FirstChild.Data + "</h6>"
+		if hasChildren(n) {
+			res = "<h6 " + str + ">" + n.FirstChild.Data + "</h6>"
+		} else {
+			res = "<h6 " + str + "/>"
+		}
+
 	case "p":
-		res = "<p " + str + ">" + n.FirstChild.Data + "</p>"
+		if hasChildren(n) {
+			res = "<p " + str + ">" + n.FirstChild.Data + "</p>"
+		} else {
+			res = "<p " + str + "/>"
+		}
+
 	case "video":
 		res = "<video " + str + "/>"
 	case "audio":

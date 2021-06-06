@@ -206,3 +206,15 @@ func filterTextAreaNodes(n *html.Node) []*html.Node {
 	}
 	return retLnk
 }
+
+//filterIframeNodes will give the list of divs
+func filterIframeNodes(n *html.Node) []*html.Node {
+	if isIFrame(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterTextAreaNodes(c)...)
+	}
+	return retLnk
+}

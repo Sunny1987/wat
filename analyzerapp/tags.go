@@ -33,6 +33,8 @@ type Imgtag struct {
 	Img         string
 	Wc111Aria6  string
 	Wc111Aria10 string
+	Wc111G94    string
+	Wc111H2     string
 }
 
 //Inputtag is the Div based rule results
@@ -59,6 +61,20 @@ type Textareatag struct {
 //Videotag is the Div based rule results
 type Videotag struct {
 	Video       string
+	Wc111Aria6  string
+	Wc111Aria10 string
+}
+
+//Paratag is the Div based rule results
+type Paratag struct {
+	Para        string
+	Wc111Aria6  string
+	Wc111Aria10 string
+}
+
+//Iframetag is the Div based rule results
+type Iframetag struct {
+	Iframe      string
 	Wc111Aria6  string
 	Wc111Aria10 string
 }

@@ -226,6 +226,17 @@ func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 
 	}()
 
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all iframes...")
+		linkNodes := filterIframeNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["iframeNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
 	wg.Wait()
 	return nodeMap
 

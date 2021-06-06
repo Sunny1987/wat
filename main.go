@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/common-nighthawk/go-figure"
+	goHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -24,15 +25,21 @@ func main() {
 	serverMux := mux.NewRouter()
 
 	//Register the handlers to the server mux
-	postRouter := serverMux.Methods("POST").Subrouter()
-	postRouter.HandleFunc("/url", parseHandler.GetURLResp)
+	getRouter := serverMux.Methods("GET").Subrouter()
+	getRouter.HandleFunc("/scan", parseHandler.GetURLResp)
+
+	//CORS
+	ch := goHandlers.CORS(goHandlers.AllowedOrigins([]string{"*"}))
 
 	//heroku related updates
 	port = ":" + port
 
+	//local test
+	//port := ":8080"
+
 	prodServer := &http.Server{
 		Addr:         port,
-		Handler:      serverMux,
+		Handler:      ch(serverMux),
 		ReadTimeout:  20 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,

@@ -80,7 +80,7 @@ func nodeText(n *html.Node) string {
 		}
 
 	case "img":
-		res = "<img " + str + ">" + "/>"
+		res = "<img " + str + "/>"
 	case "select":
 		res = "<select " + str + "/>"
 	case "textarea":

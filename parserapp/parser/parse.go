@@ -237,6 +237,17 @@ func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 
 	}()
 
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all areas...")
+		linkNodes := filterAreaNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["areaNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
 	wg.Wait()
 	return nodeMap
 

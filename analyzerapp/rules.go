@@ -113,6 +113,15 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 		wg.Done()
 	}()
 
+	//area analysis
+	wg.Add(1)
+	go func() {
+		myMap := areaAnalysis(l.l, nodeMap)
+		myList := myMap["area"]
+		ruleResults.AreaResults = myList
+		wg.Done()
+	}()
+
 	wg.Wait()
 	return ruleResults
 }
@@ -303,6 +312,25 @@ func linkAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]A
 	}
 	l.Printf("anchor: %v\n", list)
 	issues["anchor"] = list
+
+	return issues
+}
+
+//areaAnalysis function initiates all the link rule based analysis
+func areaAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Areatag {
+	l.Println("Initiating area tag Analysis......")
+	nodes := nodeMap["areaNodes"]
+
+	var issues = make(map[string][]Areatag)
+	var list []Areatag
+	for _, node := range nodes {
+		var tag Areatag
+		tag.areaRulesWCAG111(node, l)
+		l.Printf("Areatag : %v", tag)
+		list = append(list, tag)
+	}
+	l.Printf("Area: %v\n", list)
+	issues["area"] = list
 
 	return issues
 }

@@ -120,7 +120,12 @@ func isButton(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "button"
 }
 
-//isButton will validate an Image tag
+//isIFrame will validate an Image tag
 func isIFrame(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "iframe"
+}
+
+//isArea will validate an Area tag
+func isArea(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "area"
 }

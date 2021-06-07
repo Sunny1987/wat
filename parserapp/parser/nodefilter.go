@@ -111,7 +111,7 @@ func filterH5Nodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterH6Nodes will give the list of divs
+//filterH6Nodes will give the list of H6
 func filterH6Nodes(n *html.Node) []*html.Node {
 	if isH6(n) {
 		return []*html.Node{n}
@@ -123,7 +123,7 @@ func filterH6Nodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterImageNodes will give the list of divs
+//filterImageNodes will give the list of image
 func filterImageNodes(n *html.Node) []*html.Node {
 	if isImage(n) {
 		return []*html.Node{n}
@@ -135,7 +135,7 @@ func filterImageNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterInputNodes will give the list of divs
+//filterInputNodes will give the list of input
 func filterInputNodes(n *html.Node) []*html.Node {
 	if isInput(n) {
 		return []*html.Node{n}
@@ -147,7 +147,7 @@ func filterInputNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterButtonNodes will give the list of divs
+//filterButtonNodes will give the list of button
 func filterButtonNodes(n *html.Node) []*html.Node {
 	if isButton(n) {
 		return []*html.Node{n}
@@ -159,7 +159,7 @@ func filterButtonNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterVideoNodes will give the list of divs
+//filterVideoNodes will give the list of video
 func filterVideoNodes(n *html.Node) []*html.Node {
 	if isVideo(n) {
 		return []*html.Node{n}
@@ -171,7 +171,7 @@ func filterVideoNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterAudioNodes will give the list of divs
+//filterAudioNodes will give the list of audio
 func filterAudioNodes(n *html.Node) []*html.Node {
 	if isAudio(n) {
 		return []*html.Node{n}
@@ -183,7 +183,7 @@ func filterAudioNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterSelectNodes will give the list of divs
+//filterSelectNodes will give the list of select
 func filterSelectNodes(n *html.Node) []*html.Node {
 	if isSelect(n) {
 		return []*html.Node{n}
@@ -195,7 +195,7 @@ func filterSelectNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterTextAreaNodes will give the list of divs
+//filterTextAreaNodes will give the list of TextArea
 func filterTextAreaNodes(n *html.Node) []*html.Node {
 	if isTextArea(n) {
 		return []*html.Node{n}
@@ -207,14 +207,26 @@ func filterTextAreaNodes(n *html.Node) []*html.Node {
 	return retLnk
 }
 
-//filterIframeNodes will give the list of divs
+//filterIframeNodes will give the list of iframes
 func filterIframeNodes(n *html.Node) []*html.Node {
 	if isIFrame(n) {
 		return []*html.Node{n}
 	}
 	var retLnk []*html.Node
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterTextAreaNodes(c)...)
+		retLnk = append(retLnk, filterIframeNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterAreaNodes will give the list of areas
+func filterAreaNodes(n *html.Node) []*html.Node {
+	if isArea(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterAreaNodes(c)...)
 	}
 	return retLnk
 }

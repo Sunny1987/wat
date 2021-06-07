@@ -17,6 +17,7 @@ func Analysis(l *log.Logger) *MyAnalysisLog {
 }
 
 var wg sync.WaitGroup
+var mu sync.RWMutex
 
 //ApplyRules will initiate rule application
 func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
@@ -27,7 +28,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := divAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["div"]
+		mu.RUnlock()
 		ruleResults.DivResults = myList
 		wg.Done()
 	}()
@@ -36,7 +39,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := buttonAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["button"]
+		mu.RUnlock()
 		ruleResults.ButtonResults = myList
 		wg.Done()
 	}()
@@ -45,7 +50,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := inputAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["input"]
+		mu.RUnlock()
 		ruleResults.InputResults = myList
 		wg.Done()
 	}()
@@ -54,7 +61,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := imagesAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["image"]
+		mu.RUnlock()
 		ruleResults.ImageResults = myList
 		wg.Done()
 	}()
@@ -63,7 +72,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := videoAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["video"]
+		mu.RUnlock()
 		ruleResults.VideoResults = myList
 		wg.Done()
 	}()
@@ -72,7 +83,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := audioAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["audio"]
+		mu.RUnlock()
 		ruleResults.AudioResults = myList
 		wg.Done()
 	}()
@@ -81,7 +94,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := textareaAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["textarea"]
+		mu.RUnlock()
 		ruleResults.TextareaResults = myList
 		wg.Done()
 	}()
@@ -90,7 +105,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := selectAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["select"]
+		mu.RUnlock()
 		ruleResults.SelectResults = myList
 		wg.Done()
 	}()
@@ -99,7 +116,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := iframeAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["iframe"]
+		mu.RUnlock()
 		ruleResults.IframeResults = myList
 		wg.Done()
 	}()
@@ -108,7 +127,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := linkAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["anchor"]
+		mu.RUnlock()
 		ruleResults.LinkResults = myList
 		wg.Done()
 	}()
@@ -117,7 +138,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := areaAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["area"]
+		mu.RUnlock()
 		ruleResults.AreaResults = myList
 		wg.Done()
 	}()
@@ -126,7 +149,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := objectAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["object"]
+		mu.RUnlock()
 		ruleResults.ObjectResults = myList
 		wg.Done()
 	}()
@@ -135,7 +160,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := embedAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["embed"]
+		mu.RUnlock()
 		ruleResults.EmbedResults = myList
 		wg.Done()
 	}()
@@ -144,7 +171,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	wg.Add(1)
 	go func() {
 		myMap := trackAnalysis(l.l, nodeMap)
+		mu.RLock()
 		myList := myMap["track"]
+		mu.RUnlock()
 		ruleResults.TrackResults = myList
 		wg.Done()
 	}()

@@ -129,3 +129,23 @@ func isIFrame(n *html.Node) bool {
 func isArea(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "area"
 }
+
+//isObject will validate an object tag
+func isObject(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "object"
+}
+
+//isEmbed will validate an embed tag
+func isEmbed(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "embed"
+}
+
+//isTrack will validate an embed tag
+func isTrack(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "track"
+}
+
+//isApplet will validate an embed tag
+func isApplet(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "applet"
+}

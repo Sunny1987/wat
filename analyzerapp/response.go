@@ -2,7 +2,7 @@ package analyzerapp
 
 //Response is the response object for json
 type Response struct {
-	//Request parser.MyURLReq `json:"request"`
+	//Request         utilities.Add
 	DivResults      []Divtag      `json:"divs"`
 	ButtonResults   []Buttontag   `json:"buttons"`
 	InputResults    []Inputtag    `json:"inputs"`
@@ -15,4 +15,7 @@ type Response struct {
 	IframeResults   []Iframetag   `json:"iframes"`
 	LinkResults     []Anchortag   `json:"links"`
 	AreaResults     []Areatag     `json:"areas"`
+	ObjectResults   []Objecttag   `json:"objects"`
+	EmbedResults    []Embedtag    `json:"embeds"`
+	TrackResults    []Tracktag    `json:"tracks"`
 }

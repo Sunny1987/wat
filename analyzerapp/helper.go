@@ -156,3 +156,11 @@ func nodeText(n *html.Node) string {
 
 	return res
 }
+
+//isTextNode will validate if node is TextNode
+func isTextNode(n *html.Node) bool {
+	if n.Type == html.TextNode && n.DataAtom == 0 {
+		return true
+	}
+	return false
+}

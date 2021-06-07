@@ -16,4 +16,3 @@ Future Enhancements:
 1. Include depth assessment for websites to extract links
 2. Add scope for WCAG 2.1 A conformance level guidelines.
 
-

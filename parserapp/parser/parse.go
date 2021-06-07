@@ -248,6 +248,50 @@ func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 
 	}()
 
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all objects...")
+		linkNodes := filterObjectNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["objectNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all embeds...")
+		linkNodes := filterEmbedNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["embedNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all tracks...")
+		linkNodes := filterTrackNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["trackNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
+	wg.Add(1)
+	go func() {
+		l.Println("Collecting all applets...")
+		linkNodes := filterAppletNodes(doc)
+		if len(linkNodes) > 0 {
+			nodeMap["appletNodes"] = linkNodes
+		}
+		wg.Done()
+
+	}()
+
 	wg.Wait()
 	return nodeMap
 

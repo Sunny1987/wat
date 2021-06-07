@@ -78,3 +78,10 @@ type Iframetag struct {
 	Wc111Aria6  string
 	Wc111Aria10 string
 }
+
+//Areatag is the Div based rule results
+type Areatag struct {
+	Area     string
+	Wc111G94 string
+	Wc111H2  string
+}

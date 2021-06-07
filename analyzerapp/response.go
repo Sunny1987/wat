@@ -14,4 +14,5 @@ type Response struct {
 	ParaResults     []Paratag     `json:"paras"`
 	IframeResults   []Iframetag   `json:"iframes"`
 	LinkResults     []Anchortag   `json:"links"`
+	AreaResults     []Areatag     `json:"areas"`
 }

@@ -32,7 +32,7 @@ func (d *Divtag) divRulesWCAG111(node *html.Node, l *log.Logger) {
 //buttonRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Buttontag) buttonRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating button object
 	d.Button = nodeText(node)
 
 	//ARIA6
@@ -56,7 +56,7 @@ func (d *Buttontag) buttonRulesWCAG111(node *html.Node, l *log.Logger) {
 //inputRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Inputtag) inputRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating input object
 	d.Input = nodeText(node)
 
 	//ARIA6
@@ -80,7 +80,7 @@ func (d *Inputtag) inputRulesWCAG111(node *html.Node, l *log.Logger) {
 //videoRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Videotag) videoRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating video object
 	d.Video = nodeText(node)
 
 	//ARIA6
@@ -104,7 +104,7 @@ func (d *Videotag) videoRulesWCAG111(node *html.Node, l *log.Logger) {
 //audioRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Audiotag) audioRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating audio object
 	d.Audio = nodeText(node)
 
 	//ARIA6
@@ -128,7 +128,7 @@ func (d *Audiotag) audioRulesWCAG111(node *html.Node, l *log.Logger) {
 //selectRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Selecttag) selectRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating select object
 	d.Select = nodeText(node)
 
 	//ARIA6
@@ -152,7 +152,7 @@ func (d *Selecttag) selectRulesWCAG111(node *html.Node, l *log.Logger) {
 //textAreaRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Textareatag) textAreaRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating textarea object
 	d.Textarea = nodeText(node)
 
 	//ARIA6
@@ -176,7 +176,7 @@ func (d *Textareatag) textAreaRulesWCAG111(node *html.Node, l *log.Logger) {
 //imagesRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Imgtag) imagesRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating image object
 	d.Img = nodeText(node)
 
 	//ARIA6
@@ -215,7 +215,7 @@ func (d *Imgtag) imagesRulesWCAG111(node *html.Node, l *log.Logger) {
 //iframeRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Iframetag) iframeRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating iframe object
 	d.Iframe = nodeText(node)
 
 	//ARIA6
@@ -239,7 +239,7 @@ func (d *Iframetag) iframeRulesWCAG111(node *html.Node, l *log.Logger) {
 //linkRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Anchortag) linkRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
+	// creating link object
 	d.Anchor = nodeText(node)
 
 	//ARIA6
@@ -256,6 +256,30 @@ func (d *Anchortag) linkRulesWCAG111(node *html.Node, l *log.Logger) {
 		d.Wc111Aria10 = "fail"
 	} else {
 		d.Wc111Aria10 = "pass"
+	}
+
+}
+
+//areaRulesWCAG111 will check all WCAG1.1.1 techniques
+func (d *Areatag) areaRulesWCAG111(node *html.Node, l *log.Logger) {
+
+	// creating link object
+	d.Area = nodeText(node)
+
+	//G94
+	l.Println("Start processing : G94 ")
+	if stat := G94(node); !stat {
+		d.Wc111G94 = "fail"
+	} else {
+		d.Wc111G94 = "pass"
+	}
+
+	//H2
+	l.Println("Start processing : H2")
+	if stat := H2(node); stat {
+		d.Wc111H2 = "fail"
+	} else {
+		d.Wc111H2 = "pass"
 	}
 
 }
@@ -296,6 +320,23 @@ func G94(node *html.Node) bool {
 	if attributeCheckValEmpty(node.Attr, "alt") {
 		return true
 	}
+	if attributeCheckVal(node.Attr, "role", "img") {
+		if attributeCheckValEmpty(node.Attr, "aria-labelledby") {
+			return true
+		}
+	}
+	if attributeCheckVal(node.Attr, "role", "img") {
+		if attributeCheckValEmpty(node.Attr, "aria-label") {
+			return true
+		}
+	}
+	if attributeCheckValEmpty(node.Attr, "title") {
+		return true
+	}
+	if !attributeCheckValEmpty(node.Attr, "alt") && attributeCheckVal(node.Attr, "role", "presentation") {
+		return true
+	}
+
 	return false
 }
 

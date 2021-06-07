@@ -25,8 +25,8 @@ func main() {
 	serverMux := mux.NewRouter()
 
 	//Register the handlers to the server mux
-	getRouter := serverMux.Methods("GET").Subrouter()
-	getRouter.HandleFunc("/scan", parseHandler.GetURLResp)
+	postRouter := serverMux.Methods("POST").Subrouter()
+	postRouter.HandleFunc("/scan", parseHandler.GetURLResp)
 
 	//CORS
 	ch := goHandlers.CORS(goHandlers.AllowedOrigins([]string{"*"}))

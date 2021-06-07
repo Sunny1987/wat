@@ -13,18 +13,27 @@ func (d *Divtag) divRulesWCAG111(node *html.Node, l *log.Logger) {
 
 	//ARIA6
 	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -36,19 +45,27 @@ func (d *Buttontag) buttonRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Button = nodeText(node)
 
 	//ARIA6
-	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -60,19 +77,27 @@ func (d *Inputtag) inputRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Input = nodeText(node)
 
 	//ARIA6
-	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -84,19 +109,27 @@ func (d *Videotag) videoRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Video = nodeText(node)
 
 	//ARIA6
-	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -108,19 +141,27 @@ func (d *Audiotag) audioRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Audio = nodeText(node)
 
 	//ARIA6
-	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -132,19 +173,27 @@ func (d *Selecttag) selectRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Select = nodeText(node)
 
 	//ARIA6
-	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -156,19 +205,27 @@ func (d *Textareatag) textAreaRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Textarea = nodeText(node)
 
 	//ARIA6
-	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -180,35 +237,51 @@ func (d *Imgtag) imagesRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Img = nodeText(node)
 
 	//ARIA6
-	l.Println("Start processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == Applicable {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Start processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 	//G94
 	l.Println("Start processing : G94 ")
-	if stat := G94(node); !stat {
-		d.Wc111G94 = "fail"
+	if apply, stat := G94(node); apply == Applicable {
+		if !stat {
+			d.Wc111G94 = "fail"
+		} else {
+			d.Wc111G94 = "pass"
+		}
 	} else {
-		d.Wc111G94 = "pass"
+		d.Wc111G94 = apply
 	}
 
 	//H2
 	l.Println("Start processing : H2")
-	if stat := H2(node); stat {
-		d.Wc111H2 = "fail"
+	if apply, stat := H2(node); apply == Applicable {
+		if stat {
+			d.Wc111H2 = "fail"
+		} else {
+			d.Wc111H2 = "pass"
+		}
 	} else {
-		d.Wc111H2 = "pass"
+		d.Wc111H2 = apply
 	}
 }
 
@@ -220,18 +293,27 @@ func (d *Iframetag) iframeRulesWCAG111(node *html.Node, l *log.Logger) {
 
 	//ARIA6
 	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+	apply, stat := aria6(node)
+	if apply == "A" {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -244,18 +326,29 @@ func (d *Anchortag) linkRulesWCAG111(node *html.Node, l *log.Logger) {
 
 	//ARIA6
 	l.Println("Starting processing : ARIA6")
-	if stat := aria6(node); stat {
-		d.Wc111Aria6 = "fail"
+
+	apply, stat := aria6(node)
+
+	if apply == "A" {
+		if stat {
+			d.Wc111Aria6 = "fail"
+		} else {
+			d.Wc111Aria6 = "pass"
+		}
 	} else {
-		d.Wc111Aria6 = "pass"
+		d.Wc111Aria6 = apply
 	}
 
 	//ARIA10
 	l.Println("Starting processing : ARIA10")
-	if stat := aria10(node); !stat {
-		d.Wc111Aria10 = "fail"
+	if apply, stat := aria10(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria10 = "fail"
+		} else {
+			d.Wc111Aria10 = "pass"
+		}
 	} else {
-		d.Wc111Aria10 = "pass"
+		d.Wc111Aria10 = apply
 	}
 
 }
@@ -268,18 +361,45 @@ func (d *Areatag) areaRulesWCAG111(node *html.Node, l *log.Logger) {
 
 	//G94
 	l.Println("Start processing : G94 ")
-	if stat := G94(node); !stat {
-		d.Wc111G94 = "fail"
+	if apply, stat := G94(node); apply == Applicable {
+		if !stat {
+			d.Wc111G94 = "fail"
+		} else {
+			d.Wc111G94 = "pass"
+		}
 	} else {
-		d.Wc111G94 = "pass"
+		d.Wc111G94 = apply
 	}
 
 	//H2
 	l.Println("Start processing : H2")
-	if stat := H2(node); stat {
-		d.Wc111H2 = "fail"
+	if apply, stat := H2(node); apply == Applicable {
+		if stat {
+			d.Wc111H2 = "fail"
+		} else {
+			d.Wc111H2 = "pass"
+		}
 	} else {
-		d.Wc111H2 = "pass"
+		d.Wc111H2 = apply
+	}
+
+}
+
+//appletRulesWCAG111 will check all WCAG1.1.1 techniques
+func (d *Applettag) appletRulesWCAG111(node *html.Node, l *log.Logger) {
+
+	// creating link object
+	d.Applet = nodeText(node)
+
+	//H35 implementation
+	if apply, stat := H35(node); apply == Applicable {
+		if stat {
+			d.Wc111H35 = "pass"
+		} else {
+			d.Wc111H35 = "fail"
+		}
+	} else {
+		d.Wc111H35 = apply
 	}
 
 }
@@ -289,63 +409,90 @@ func (d *Areatag) areaRulesWCAG111(node *html.Node, l *log.Logger) {
 /********************************************/
 
 //aria6 is for ARIA6 validation
-func aria6(node *html.Node) bool {
+func aria6(node *html.Node) (string, bool) {
 	if attributeSearch(node.Attr, "role") {
 		if attributeCheckValEmpty(node.Attr, "aria-label") {
-			return true
+			return Applicable, true
+		} else {
+			return Applicable, false
 		}
 	}
-	return false
+	return NA, false
 }
 
 //aria10 is for ARIA10 validation
-func aria10(node *html.Node) bool {
+func aria10(node *html.Node) (string, bool) {
 
 	if hasChildren(node) {
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			if attributeSearch(c.Attr, "src") {
-				if attributeSearch(node.Attr, "aria-labelledby") {
-					return false
+		if attributeCheckValEmpty(node.Attr, "aria-labelledby") {
+			for c := node.FirstChild; c != nil; c = c.NextSibling {
+				if attributeSearch(c.Attr, "src") {
+					if attributeCheckValEmpty(node.Attr, "alt") {
+						return Applicable, true
+					} else {
+						return Applicable, false
+					}
 				}
 			}
 		}
+
 	}
 
-	return true
+	return NA, true
 
 }
 
 //G94 is for image tag alt attribute validation
-func G94(node *html.Node) bool {
+func G94(node *html.Node) (string, bool) {
 	if attributeCheckValEmpty(node.Attr, "alt") {
-		return true
+		return Applicable, true
 	}
 	if attributeCheckVal(node.Attr, "role", "img") {
 		if attributeCheckValEmpty(node.Attr, "aria-labelledby") {
-			return true
+			return Applicable, true
+		} else {
+			return Applicable, false
 		}
 	}
 	if attributeCheckVal(node.Attr, "role", "img") {
 		if attributeCheckValEmpty(node.Attr, "aria-label") {
-			return true
+			return Applicable, true
+		} else {
+			return NA, false
 		}
 	}
 	if attributeCheckValEmpty(node.Attr, "title") {
-		return true
+		return Applicable, true
 	}
 	if !attributeCheckValEmpty(node.Attr, "alt") && attributeCheckVal(node.Attr, "role", "presentation") {
-		return true
+		return Applicable, true
 	}
 
-	return false
+	return Applicable, false
 }
 
 //H2 is for image tag alt attribute validation
-func H2(node *html.Node) bool {
+func H2(node *html.Node) (string, bool) {
 	if node.Parent.Data == "a" {
 		if attributeCheckValEmpty(node.Attr, "alt") {
-			return true
+			return Applicable, true
+		} else {
+			return Applicable, false
 		}
 	}
-	return false
+	return NA, false
+}
+
+func H35(node *html.Node) (string, bool) {
+	if hasOneChild(node) {
+		if isTextNode(node.FirstChild) {
+			if attributeCheckValEmpty(node.Attr, "alt") {
+				return Applicable, true
+			} else {
+				return Applicable, false
+			}
+		}
+	}
+	return NA, false
+
 }

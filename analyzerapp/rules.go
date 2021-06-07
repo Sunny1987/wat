@@ -122,6 +122,33 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 		wg.Done()
 	}()
 
+	//object analysis
+	wg.Add(1)
+	go func() {
+		myMap := objectAnalysis(l.l, nodeMap)
+		myList := myMap["object"]
+		ruleResults.ObjectResults = myList
+		wg.Done()
+	}()
+
+	//embed analysis
+	wg.Add(1)
+	go func() {
+		myMap := embedAnalysis(l.l, nodeMap)
+		myList := myMap["embed"]
+		ruleResults.EmbedResults = myList
+		wg.Done()
+	}()
+
+	//track analysis
+	wg.Add(1)
+	go func() {
+		myMap := trackAnalysis(l.l, nodeMap)
+		myList := myMap["track"]
+		ruleResults.TrackResults = myList
+		wg.Done()
+	}()
+
 	wg.Wait()
 	return ruleResults
 }
@@ -212,6 +239,7 @@ func videoAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	for _, node := range nodes {
 		var tag Videotag
 		tag.videoRulesWCAG111(node, l)
+		tag.videoRulesWCAG121(node, l)
 		l.Printf("videoTag : %v", tag)
 		list = append(list, tag)
 	}
@@ -231,6 +259,7 @@ func audioAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	for _, node := range nodes {
 		var tag Audiotag
 		tag.audioRulesWCAG111(node, l)
+		tag.audioRulesWCAG121(node, l)
 		l.Printf("audioTag : %v", tag)
 		list = append(list, tag)
 	}
@@ -331,6 +360,63 @@ func areaAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]A
 	}
 	l.Printf("Area: %v\n", list)
 	issues["area"] = list
+
+	return issues
+}
+
+//objectAnalysis function initiates all the object rule based analysis
+func objectAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Objecttag {
+	l.Println("Initiating object tag Analysis......")
+	nodes := nodeMap["objectNodes"]
+
+	var issues = make(map[string][]Objecttag)
+	var list []Objecttag
+	for _, node := range nodes {
+		var tag Objecttag
+		tag.objectRulesWCAG121(node, l)
+		l.Printf("Objecttag : %v", tag)
+		list = append(list, tag)
+	}
+	l.Printf("Object: %v\n", list)
+	issues["object"] = list
+
+	return issues
+}
+
+//embedAnalysis function initiates all the embed rule based analysis
+func embedAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Embedtag {
+	l.Println("Initiating embed tag Analysis......")
+	nodes := nodeMap["embedNodes"]
+
+	var issues = make(map[string][]Embedtag)
+	var list []Embedtag
+	for _, node := range nodes {
+		var tag Embedtag
+		tag.embedRulesWCAG121(node, l)
+		l.Printf("Embedtag : %v", tag)
+		list = append(list, tag)
+	}
+	l.Printf("Embed: %v\n", list)
+	issues["embed"] = list
+
+	return issues
+}
+
+//trackAnalysis function initiates all the track rule based analysis
+func trackAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Tracktag {
+	l.Println("Initiating track tag Analysis......")
+	nodes := nodeMap["trackNodes"]
+
+	var issues = make(map[string][]Tracktag)
+	var list []Tracktag
+	for _, node := range nodes {
+		var tag Tracktag
+		tag.trackRulesWCAG121(node, l)
+		l.Printf("tracktag : %v", tag)
+		list = append(list, tag)
+	}
+	l.Printf("track: %v\n", list)
+	issues["track"] = list
 
 	return issues
 }

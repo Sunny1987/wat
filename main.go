@@ -20,7 +20,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	l := log.New(os.Stdout, "parser:", log.LstdFlags)
+	l := log.New(os.Stdout, "WAT:", log.LstdFlags)
 	parseHandler := parserhandler.GetNewLogger(l)
 	serverMux := mux.NewRouter()
 
@@ -51,7 +51,7 @@ func main() {
 		myFigure.Print()
 		l.Println("version: 1.0.0")
 		l.Println("Author: Sabyasachi Roy")
-		l.Println("Starting server at port 8080...")
+		l.Println("Starting server...")
 		if err := prodServer.ListenAndServe(); err != nil {
 			l.Printf("Error starting server: %v", err)
 			os.Exit(1)

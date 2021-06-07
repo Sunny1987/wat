@@ -230,3 +230,51 @@ func filterAreaNodes(n *html.Node) []*html.Node {
 	}
 	return retLnk
 }
+
+//filterObjectNodes will give the list of objects
+func filterObjectNodes(n *html.Node) []*html.Node {
+	if isObject(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterObjectNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterEmbedNodes will give the list of embeds
+func filterEmbedNodes(n *html.Node) []*html.Node {
+	if isEmbed(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterEmbedNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterTrackNodes will give the list of tracks
+func filterTrackNodes(n *html.Node) []*html.Node {
+	if isTrack(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterTrackNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterAppletNodes will give the list of tracks
+func filterAppletNodes(n *html.Node) []*html.Node {
+	if isApplet(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, filterAppletNodes(c)...)
+	}
+	return retLnk
+}

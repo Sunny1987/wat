@@ -93,6 +93,8 @@ type Objecttag struct {
 	Object    string
 	Wc121H96  string
 	Wc121ARIA string
+	Wc111H53  string
+	Wc121G166 string
 }
 
 //Embedtag is the embed based rule results
@@ -100,6 +102,8 @@ type Embedtag struct {
 	Embed     string
 	Wc121H96  string
 	Wc121ARIA string
+	Wc111H53  string
+	Wc121G166 string
 }
 
 //Tracktag is the track based rule results

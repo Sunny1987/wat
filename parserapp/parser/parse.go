@@ -29,7 +29,7 @@ func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
 
 	//initiate analysis
 	ml.l.Println("Initiating WCAG 2.1 analysis.....")
-	results := analyzerapp.Analysis(ml.l).ApplyRules(nodeMap)
+	results := analyzerapp.Analysis(ml.l, ml.req).ApplyRules(nodeMap)
 	return results
 
 }

@@ -30,15 +30,16 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	logger := parser.GetMyLogger(n.l)
+	logger := parser.GetMyLogger(n.l, req)
 
 	results := logger.Parse(resp.Body)
+
 	n.l.Println("Initiating the response....")
-	rep,err := json.MarshalIndent(results,""," ")
+	rep, err := json.MarshalIndent(results, "", " ")
 	if err != nil {
 		n.l.Println(err)
 	}
-	fmt.Fprintln(rw,string(rep))
-	n.l.Printf("Query completed in %v\n",time.Since(timeStart))
+	fmt.Fprintln(rw, string(rep))
+	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
 
 }

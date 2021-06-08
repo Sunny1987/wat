@@ -392,6 +392,7 @@ func (d *Applettag) appletRulesWCAG111(node *html.Node, l *log.Logger) {
 	d.Applet = nodeText(node)
 
 	//H35 implementation
+	l.Println("Starting processing : H35")
 	if apply, stat := H35(node); apply == Applicable {
 		if stat {
 			d.Wc111H35 = "pass"
@@ -400,6 +401,46 @@ func (d *Applettag) appletRulesWCAG111(node *html.Node, l *log.Logger) {
 		}
 	} else {
 		d.Wc111H35 = apply
+	}
+
+}
+
+//objectRulesWCAG111 will check all WCAG1.1.1 techniques
+func (d *Objecttag) objectRulesWCAG111(node *html.Node, l *log.Logger) {
+
+	// creating link object
+	d.Object = nodeText(node)
+
+	//H53 implementation
+	l.Println("Starting processing : H53")
+	if apply, stat := H53(node); apply == Applicable {
+		if stat {
+			d.Wc111H53 = "pass"
+		} else {
+			d.Wc111H53 = "fail"
+		}
+	} else {
+		d.Wc111H53 = apply
+	}
+
+}
+
+//embedRulesWCAG111 will check all WCAG1.1.1 techniques
+func (d *Embedtag) embedRulesWCAG111(node *html.Node, l *log.Logger) {
+
+	// creating link object
+	d.Embed = nodeText(node)
+
+	//H53 implementation
+	l.Println("Starting processing : H53")
+	if apply, stat := H53(node); apply == Applicable {
+		if stat {
+			d.Wc111H53 = "pass"
+		} else {
+			d.Wc111H53 = "fail"
+		}
+	} else {
+		d.Wc111H53 = apply
 	}
 
 }
@@ -483,6 +524,7 @@ func H2(node *html.Node) (string, bool) {
 	return NA, false
 }
 
+//H35 for applet based implementation
 func H35(node *html.Node) (string, bool) {
 	if hasOneChild(node) {
 		if isTextNode(node.FirstChild) {
@@ -495,4 +537,22 @@ func H35(node *html.Node) (string, bool) {
 	}
 	return NA, false
 
+}
+
+//H53 for object based implementation
+func H53(node *html.Node) (string, bool) {
+	if hasOneChild(node) {
+		if node.FirstChild.Data != "p" {
+			return Applicable, false
+		}
+		if node.FirstChild.Data == "img" {
+			if attributeCheckValEmpty(node.FirstChild.Attr, "alt") {
+				return Applicable, true
+			} else {
+				return Applicable, false
+			}
+		}
+
+	}
+	return NA, false
 }

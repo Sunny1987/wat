@@ -8,12 +8,13 @@ import (
 
 //MyAnalysisLog is the logger for analysisapp
 type MyAnalysisLog struct {
-	l *log.Logger
+	l   *log.Logger
+	req interface{}
 }
 
 //Analysis will return the MyAnalysisLog logger
-func Analysis(l *log.Logger) *MyAnalysisLog {
-	return &MyAnalysisLog{l: l}
+func Analysis(l *log.Logger, req interface{}) *MyAnalysisLog {
+	return &MyAnalysisLog{l: l, req: req}
 }
 
 var wg sync.WaitGroup
@@ -23,6 +24,9 @@ var mu sync.RWMutex
 func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 	l.l.Println("Initiating Rules Check....")
 	var ruleResults Response
+
+	//Add the requestR
+	ruleResults.Request = l.req
 
 	//div analysis
 	wg.Add(1)
@@ -192,10 +196,10 @@ func divAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Di
 	for _, node := range nodes {
 		var tag Divtag
 		tag.divRulesWCAG111(node, l)
-		l.Printf("divTag : %v", tag)
+		//l.Printf("divTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("divs: %v\n", list)
+	//l.Printf("divs: %v\n", list)
 	issues["div"] = list
 
 	return issues
@@ -211,10 +215,10 @@ func buttonAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	for _, node := range nodes {
 		var tag Buttontag
 		tag.buttonRulesWCAG111(node, l)
-		l.Printf("buttonTag : %v", tag)
+		//l.Printf("buttonTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("buttons: %v\n", list)
+	//l.Printf("buttons: %v\n", list)
 	issues["button"] = list
 
 	return issues
@@ -230,10 +234,10 @@ func inputAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	for _, node := range nodes {
 		var tag Inputtag
 		tag.inputRulesWCAG111(node, l)
-		l.Printf("inputTag : %v", tag)
+		//l.Printf("inputTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("inputs: %v\n", list)
+	//l.Printf("inputs: %v\n", list)
 	issues["input"] = list
 
 	return issues
@@ -249,10 +253,10 @@ func imagesAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	for _, node := range nodes {
 		var tag Imgtag
 		tag.imagesRulesWCAG111(node, l)
-		l.Printf("imageTag : %v", tag)
+		//l.Printf("imageTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("images: %v\n", list)
+	//l.Printf("images: %v\n", list)
 	issues["image"] = list
 
 	return issues
@@ -269,10 +273,10 @@ func videoAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 		var tag Videotag
 		tag.videoRulesWCAG111(node, l)
 		tag.videoRulesWCAG121(node, l)
-		l.Printf("videoTag : %v", tag)
+		//l.Printf("videoTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("videos: %v\n", list)
+	//l.Printf("videos: %v\n", list)
 	issues["video"] = list
 
 	return issues
@@ -289,10 +293,10 @@ func audioAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 		var tag Audiotag
 		tag.audioRulesWCAG111(node, l)
 		tag.audioRulesWCAG121(node, l)
-		l.Printf("audioTag : %v", tag)
+		//l.Printf("audioTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("audios: %v\n", list)
+	//l.Printf("audios: %v\n", list)
 	issues["audio"] = list
 
 	return issues
@@ -308,10 +312,10 @@ func textareaAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string
 	for _, node := range nodes {
 		var tag Textareatag
 		tag.textAreaRulesWCAG111(node, l)
-		l.Printf("textareaTag : %v", tag)
+		//l.Printf("textareaTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("textarea: %v\n", list)
+	//l.Printf("textarea: %v\n", list)
 	issues["textarea"] = list
 
 	return issues
@@ -327,10 +331,10 @@ func selectAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	for _, node := range nodes {
 		var tag Selecttag
 		tag.selectRulesWCAG111(node, l)
-		l.Printf("selectTag : %v", tag)
+		//l.Printf("selectTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("select: %v\n", list)
+	//l.Printf("select: %v\n", list)
 	issues["select"] = list
 
 	return issues
@@ -346,10 +350,10 @@ func iframeAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	for _, node := range nodes {
 		var tag Iframetag
 		tag.iframeRulesWCAG111(node, l)
-		l.Printf("iframeTag : %v", tag)
+		//l.Printf("iframeTag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("iframe: %v\n", list)
+	//l.Printf("iframe: %v\n", list)
 	issues["iframe"] = list
 
 	return issues
@@ -365,10 +369,10 @@ func linkAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]A
 	for _, node := range nodes {
 		var tag Anchortag
 		tag.linkRulesWCAG111(node, l)
-		l.Printf("Anchortag : %v", tag)
+		//l.Printf("Anchortag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("anchor: %v\n", list)
+	//l.Printf("anchor: %v\n", list)
 	issues["anchor"] = list
 
 	return issues
@@ -384,10 +388,10 @@ func areaAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]A
 	for _, node := range nodes {
 		var tag Areatag
 		tag.areaRulesWCAG111(node, l)
-		l.Printf("Areatag : %v", tag)
+		//l.Printf("Areatag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("Area: %v\n", list)
+	//l.Printf("Area: %v\n", list)
 	issues["area"] = list
 
 	return issues
@@ -403,10 +407,10 @@ func objectAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	for _, node := range nodes {
 		var tag Objecttag
 		tag.objectRulesWCAG121(node, l)
-		l.Printf("Objecttag : %v", tag)
+		//l.Printf("Objecttag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("Object: %v\n", list)
+	//l.Printf("Object: %v\n", list)
 	issues["object"] = list
 
 	return issues
@@ -422,10 +426,10 @@ func embedAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	for _, node := range nodes {
 		var tag Embedtag
 		tag.embedRulesWCAG121(node, l)
-		l.Printf("Embedtag : %v", tag)
+		//l.Printf("Embedtag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("Embed: %v\n", list)
+	//l.Printf("Embed: %v\n", list)
 	issues["embed"] = list
 
 	return issues
@@ -441,10 +445,10 @@ func trackAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	for _, node := range nodes {
 		var tag Tracktag
 		tag.trackRulesWCAG121(node, l)
-		l.Printf("tracktag : %v", tag)
+		//l.Printf("tracktag : %v", tag)
 		list = append(list, tag)
 	}
-	l.Printf("track: %v\n", list)
+	//l.Printf("track: %v\n", list)
 	issues["track"] = list
 
 	return issues

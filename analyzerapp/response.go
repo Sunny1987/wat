@@ -2,7 +2,7 @@ package analyzerapp
 
 //Response is the response object for json
 type Response struct {
-	//Request         utilities.Add
+	Request         interface{}   `json:"request"`
 	DivResults      []Divtag      `json:"divs"`
 	ButtonResults   []Buttontag   `json:"buttons"`
 	InputResults    []Inputtag    `json:"inputs"`

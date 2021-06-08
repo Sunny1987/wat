@@ -4,7 +4,7 @@ An open source project on accessibility testing
 Purpose: Current implementation of world-wide usage guidelines WCAG is under process for a high quality free web pages testing.
 The repo is deployed in heroku platform. The services can be currently availed for WCAG 1.1.1 techniques.
 
-GET https://watsab.herokuapp.com/scan
+POST https://watsab.herokuapp.com/scan
 
 body:
 {

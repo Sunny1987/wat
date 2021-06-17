@@ -1,9 +1,6 @@
 package parserhandler
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
 	"time"
@@ -22,36 +19,12 @@ func GetNewLogger(l *log.Logger) *NewLogger {
 
 //GetURLResp will return the WCAG2.1 guidelines result for a URL
 func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("token")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			rw.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-		rw.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	tokenStr := cookie.Value
-	claims := &Claims{}
-	tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
-	})
-	if err != nil {
-		if err == jwt.ErrSignatureInvalid {
-			rw.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-		rw.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	if !tkn.Valid {
-		rw.WriteHeader(http.StatusUnauthorized)
-		return
-	}
 
+	//track execution time for scan
 	timeStart := time.Now()
-	req := &parser.MyURLReq{}
-	json.NewDecoder(r.Body).Decode(req)
+
+	//get the request from middleware
+	req := r.Context().Value(KeyUser{}).(*MyURLReq)
 	resp, err := http.Get(req.URLFromReq)
 	if err != nil {
 		n.l.Printf("Error fetching URL response", err)
@@ -62,12 +35,9 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 	results := logger.Parse(resp.Body)
 
-	n.l.Println("Initiating the response....")
-	rep, err := json.MarshalIndent(results, "", " ")
-	if err != nil {
-		n.l.Println(err)
-	}
-	fmt.Fprintln(rw, string(rep))
+	//print the response
+	PrintResponse(results, rw, n.l)
+
 	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
 
 }

@@ -28,6 +28,7 @@ func main() {
 	postRouter := serverMux.Methods("POST").Subrouter()
 	postRouter.HandleFunc("/scan", parseHandler.GetURLResp)
 	postRouter.HandleFunc("/login", parseHandler.Login)
+	postRouter.Use(parseHandler.MiddlewareValidation)
 
 	//CORS
 	ch := goHandlers.CORS(goHandlers.AllowedOrigins([]string{"*"}))

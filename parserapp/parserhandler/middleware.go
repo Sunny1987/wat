@@ -99,7 +99,7 @@ func PrintResponse(results analyzerapp.Response, rw http.ResponseWriter, l *log.
 func (req *MyURLReq) Validate() error {
 	validate := validator.New()
 	validate.RegisterValidation("url", ValidateReqUrl)
-	validate.RegisterValidation("depth", ValidateReqDepth)
+	//validate.RegisterValidation("depth", ValidateReqDepth)
 	return validate.Struct(req)
 }
 
@@ -122,10 +122,10 @@ func ValidateReqUrl(fl validator.FieldLevel) bool {
 }
 
 //ValidateReqDepth validates the request object depth parameter
-func ValidateReqDepth(fl validator.FieldLevel) bool {
-
-	if fl.Field().IsZero() {
-		return false
-	}
-	return true
-}
+//func ValidateReqDepth(fl validator.FieldLevel) bool {
+//
+//	if fl.Field().IsZero() {
+//		return false
+//	}
+//	return true
+//}

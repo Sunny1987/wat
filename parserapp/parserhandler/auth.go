@@ -10,8 +10,9 @@ import (
 
 //authentication variables
 var (
-	jwtKey = []byte("secret_key")
-	users  = map[string]string{}
+	jwtKey    = []byte("secret_key")
+	users     = map[string]string{}
+	usersList dbapp.UserList
 )
 
 //Credentials will receive the required credentials for usage
@@ -29,18 +30,22 @@ type Claims struct {
 //Login method will verify the credentials for usage
 func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 	n.l.Println("Starting login analysis...")
+
+	//get the users list
+	if usersList == nil {
+		usersList.GetUsers(n.l)
+	}
+
+	//validate update before proceed
+	if usersList == nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	var credentials Credentials
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	var usersList dbapp.UserList
-	usersList.GetUsers(n.l)
-
-	if usersList == nil {
-		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 

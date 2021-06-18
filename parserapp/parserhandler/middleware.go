@@ -67,9 +67,12 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 				return
 			}
 
+			//perform field validation
 			err = req.Validate()
 			if err != nil {
 				rw.WriteHeader(http.StatusBadRequest)
+				n.l.Printf("Error : %v", err)
+				n.l.Println("*****Exiting middleware******")
 				return
 			}
 
@@ -92,14 +95,19 @@ func PrintResponse(results analyzerapp.Response, rw http.ResponseWriter, l *log.
 	if err != nil {
 		l.Println(err)
 	}
-	fmt.Fprintln(rw, string(rep))
+	_, err = fmt.Fprintln(rw, string(rep))
+	if err != nil {
+		l.Printf("Error : %v", err)
+	}
 }
 
 //Validate the request object
 func (req *MyURLReq) Validate() error {
 	validate := validator.New()
-	validate.RegisterValidation("url", ValidateReqUrl)
-	//validate.RegisterValidation("depth", ValidateReqDepth)
+	err := validate.RegisterValidation("url", ValidateReqUrl)
+	if err != nil {
+		return err
+	}
 	return validate.Struct(req)
 }
 
@@ -120,12 +128,3 @@ func ValidateReqUrl(fl validator.FieldLevel) bool {
 	return true
 
 }
-
-//ValidateReqDepth validates the request object depth parameter
-//func ValidateReqDepth(fl validator.FieldLevel) bool {
-//
-//	if fl.Field().IsZero() {
-//		return false
-//	}
-//	return true
-//}

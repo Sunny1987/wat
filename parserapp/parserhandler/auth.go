@@ -5,15 +5,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
 	"time"
+	"webparser/dbapp"
 )
 
 //authentication variables
 var (
 	jwtKey = []byte("secret_key")
-	users  = map[string]string{
-		"admin": "admin",
-		"guest": "guest",
-	}
+	users  = map[string]string{}
 )
 
 //Credentials will receive the required credentials for usage
@@ -37,6 +35,23 @@ func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	var usersList dbapp.UserList
+	usersList.GetUsers(n.l)
+
+	if usersList == nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	n.l.Printf("userlist: %v", usersList)
+	for _, u := range usersList {
+		n.l.Printf("user: %v", u)
+		users[u.Username] = u.Password
+
+	}
+
+	//n.l.Printf("username: %v", users["admin"])
 	n.l.Printf("username: %v", credentials.Username)
 	n.l.Printf("password: %v", credentials.Password)
 

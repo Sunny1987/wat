@@ -8,13 +8,14 @@ import (
 
 //MyAnalysisLog is the logger for analysisapp
 type MyAnalysisLog struct {
-	l   *log.Logger
-	req interface{}
+	l      *log.Logger
+	req    interface{}
+	person string
 }
 
 //Analysis will return the MyAnalysisLog logger
-func Analysis(l *log.Logger, req interface{}) *MyAnalysisLog {
-	return &MyAnalysisLog{l: l, req: req}
+func Analysis(l *log.Logger, req interface{}, person string) *MyAnalysisLog {
+	return &MyAnalysisLog{l: l, req: req, person: person}
 }
 
 var wg sync.WaitGroup
@@ -27,6 +28,9 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 
 	//Add the requestR
 	ruleResults.Request = l.req
+
+	//Add the credential Details
+	ruleResults.Person = l.person
 
 	//div analysis
 	wg.Add(1)

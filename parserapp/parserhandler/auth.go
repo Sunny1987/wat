@@ -27,6 +27,8 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
+var Credential Credentials
+
 //Login method will verify the credentials for usage
 func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 	n.l.Println("Starting login analysis...")
@@ -42,8 +44,7 @@ func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var credentials Credentials
-	err := json.NewDecoder(r.Body).Decode(&credentials)
+	err := json.NewDecoder(r.Body).Decode(&Credential)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -57,11 +58,11 @@ func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//n.l.Printf("username: %v", users["admin"])
-	n.l.Printf("username: %v", credentials.Username)
-	n.l.Printf("password: %v", credentials.Password)
+	n.l.Printf("username: %v", Credential.Username)
+	n.l.Printf("password: %v", Credential.Password)
 
-	expectedPass, ok := users[credentials.Username]
-	if !ok || expectedPass != credentials.Password {
+	expectedPass, ok := users[Credential.Username]
+	if !ok || expectedPass != Credential.Password {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 
@@ -70,9 +71,9 @@ func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 	expirationTimeGuest := time.Now().Add(time.Minute * 10)
 
 	var claims *Claims
-	if credentials.Username == "admin" {
+	if Credential.Username == "admin" {
 		claims = &Claims{
-			Username: credentials.Username,
+			Username: Credential.Username,
 			StandardClaims: jwt.StandardClaims{
 				ExpiresAt: expirationTimeAdmin.Unix(),
 			},
@@ -89,9 +90,9 @@ func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 			Expires: expirationTimeAdmin,
 		})
 	}
-	if credentials.Username == "guest" {
+	if Credential.Username == "guest" {
 		claims = &Claims{
-			Username: credentials.Username,
+			Username: Credential.Username,
 			StandardClaims: jwt.StandardClaims{
 				ExpiresAt: expirationTimeGuest.Unix(),
 			},

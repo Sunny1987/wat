@@ -31,7 +31,7 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	logger := parser.GetMyLogger(n.l, req)
+	logger := parser.GetMyLogger(n.l, req, Credential.Username)
 
 	results := logger.Parse(resp.Body)
 

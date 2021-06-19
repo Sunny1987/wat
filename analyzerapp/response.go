@@ -3,6 +3,7 @@ package analyzerapp
 //Response is the response object for json
 type Response struct {
 	Request         interface{}   `json:"request"`
+	Person          string        `json:"person"`
 	DivResults      []Divtag      `json:"divs"`
 	ButtonResults   []Buttontag   `json:"buttons"`
 	InputResults    []Inputtag    `json:"inputs"`

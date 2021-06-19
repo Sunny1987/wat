@@ -15,10 +15,10 @@ var (
 
 //Result will provide the list of scans from database pgserv
 type Result []struct {
-	ScanID int    `json:"scan_id"`
-	Person string `json:"person"`
-	URL    string `json:"url"`
-	Result string `json:"result"`
+	ScanID int             `json:"scan_id"`
+	Person string          `json:"person"`
+	URL    string          `json:"url"`
+	Result json.RawMessage `json:"result"`
 }
 
 type ResultData struct {
@@ -26,6 +26,24 @@ type ResultData struct {
 	Person string `json:"person"`
 	URL    string `json:"url"`
 	Result string `json:"result"`
+}
+
+type JsonResp struct {
+	DivResults      []analyzerapp.Divtag      `json:"divs"`
+	ButtonResults   []analyzerapp.Buttontag   `json:"buttons"`
+	InputResults    []analyzerapp.Inputtag    `json:"inputs"`
+	ImageResults    []analyzerapp.Imgtag      `json:"images"`
+	VideoResults    []analyzerapp.Videotag    `json:"videos"`
+	AudioResults    []analyzerapp.Audiotag    `json:"audios"`
+	TextareaResults []analyzerapp.Textareatag `json:"textAreas"`
+	SelectResults   []analyzerapp.Selecttag   `json:"selects"`
+	ParaResults     []analyzerapp.Paratag     `json:"paras"`
+	IframeResults   []analyzerapp.Iframetag   `json:"iframes"`
+	LinkResults     []analyzerapp.Anchortag   `json:"links"`
+	AreaResults     []analyzerapp.Areatag     `json:"areas"`
+	ObjectResults   []analyzerapp.Objecttag   `json:"objects"`
+	EmbedResults    []analyzerapp.Embedtag    `json:"embeds"`
+	TrackResults    []analyzerapp.Tracktag    `json:"tracks"`
 }
 
 //GetScans will return teh list of scans

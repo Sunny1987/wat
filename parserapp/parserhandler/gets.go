@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"webparser/dbapp"
 	"webparser/parserapp/parser"
 )
 
@@ -56,7 +57,16 @@ func (n *NewLogger) GetUserBasedScans(rw http.ResponseWriter, r *http.Request) {
 	if len(scanResultDB) > 0 {
 		for _, res := range scanResultDB {
 			if res.Person == Credential.Username {
-				rep, err := json.MarshalIndent(res, "", " ")
+				var re dbapp.JsonResp
+				err := json.Unmarshal(res.Result, &re)
+
+				data := struct {
+					Id         int            `json:"id"`
+					RequestUrl string         `json:"request_url"`
+					ResData    dbapp.JsonResp `json:"scanRes"`
+				}{Id: res.ScanID, RequestUrl: res.URL, ResData: re}
+
+				rep, err := json.MarshalIndent(&data, "", " ")
 				if err != nil {
 					n.l.Println(err)
 				}

@@ -1,6 +1,8 @@
 package parserhandler
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -40,4 +42,33 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
 
+}
+
+//GetUserBasedScans will return the list of saved scans for the user
+func (n *NewLogger) GetUserBasedScans(rw http.ResponseWriter, r *http.Request) {
+
+	n.l.Println("******* Fetching the scans******")
+	//track execution time for scan
+	timeStart := time.Now()
+
+	scanResultDB.GetScans(n.l)
+
+	if len(scanResultDB) > 0 {
+		for _, res := range scanResultDB {
+			if res.Person == Credential.Username {
+				rep, err := json.MarshalIndent(res, "", " ")
+				if err != nil {
+					n.l.Println(err)
+				}
+				_, err = fmt.Fprintln(rw, string(rep))
+				if err != nil {
+					n.l.Printf("Error : %v", err)
+				}
+
+			}
+		}
+
+	}
+
+	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
 }

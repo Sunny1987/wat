@@ -10,18 +10,21 @@ import (
 	"net/http"
 	"strings"
 	"webparser/analyzerapp"
+	"webparser/dbapp"
 )
 
 type KeyUser struct{}
 
 var ctx context.Context
+var scanResultDB dbapp.Result
 
 //MiddlewareValidation will validate incoming request and authentication before scan
 func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		n.l.Println("*****Entering middleware******")
 
-		if r.URL.Path != "/login" {
+		switch r.URL.Path {
+		case "/scan":
 			//var req parser.MyURLReq
 			req := &MyURLReq{}
 			err := json.NewDecoder(r.Body).Decode(req)
@@ -79,8 +82,55 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			ctx = context.WithValue(r.Context(), KeyUser{}, req)
 			r = r.WithContext(ctx)
 			next.ServeHTTP(rw, r)
-		} else {
+
+		case "/login":
 			next.ServeHTTP(rw, r)
+
+		case "/getscans":
+			cookie, err := r.Cookie("token")
+			if err != nil {
+				if err == http.ErrNoCookie {
+					rw.WriteHeader(http.StatusUnauthorized)
+					n.l.Printf("Error : %v", err)
+					n.l.Println("*****Exiting middleware******")
+					return
+				}
+				rw.WriteHeader(http.StatusBadRequest)
+				n.l.Printf("Error : %v", err)
+				n.l.Println("*****Exiting middleware******")
+				return
+			}
+			tokenStr := cookie.Value
+			claims := &Claims{}
+			tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+				return jwtKey, nil
+			})
+			if err != nil {
+				if err == jwt.ErrSignatureInvalid {
+					rw.WriteHeader(http.StatusUnauthorized)
+					n.l.Printf("Error : %v", err)
+					n.l.Println("*****Exiting middleware******")
+
+					return
+				}
+				rw.WriteHeader(http.StatusBadRequest)
+				n.l.Printf("Error : %v", err)
+				n.l.Println("*****Exiting middleware******")
+				return
+			}
+			if !tkn.Valid {
+				rw.WriteHeader(http.StatusUnauthorized)
+				n.l.Printf("Error : %v", err)
+				n.l.Println("*****Exiting middleware******")
+				return
+			}
+
+			//ctx = context.WithValue(r.Context(), KeyUser{}, req)
+			ctx = context.TODO()
+			r = r.WithContext(ctx)
+
+			next.ServeHTTP(rw, r)
+
 		}
 
 		n.l.Println("No Error")
@@ -91,6 +141,43 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 //PrintResponse will print the final response for scan
 func PrintResponse(results analyzerapp.Response, rw http.ResponseWriter, l *log.Logger) {
 	l.Println("Initiating the response....")
+
+	//Get all Scans list
+	scanResultDB.GetScans(l)
+
+	//Add logic to check scan count in db
+	scanmap := make(map[int]int)
+
+	if len(scanResultDB) > 0 {
+		countRecs := 0
+		for _, res := range scanResultDB {
+			if res.Person == Credential.Username {
+				scanmap[countRecs] = res.ScanID
+				countRecs++
+			}
+		}
+		if countRecs > 4 {
+
+			// Add logic to delete additional scans
+			for i := 0; i < countRecs-4; i++ {
+				dbapp.DeleteAScan(scanmap[i], l)
+			}
+
+			//Add the scan results in db
+			dbapp.AddScan(results, l)
+
+		} else {
+			//Add the scan results in db
+			dbapp.AddScan(results, l)
+		}
+	} else {
+		//Add the scan results in db
+		if results.Person != "" {
+			dbapp.AddScan(results, l)
+		}
+
+	}
+
 	rep, err := json.MarshalIndent(results, "", " ")
 	if err != nil {
 		l.Println(err)

@@ -28,6 +28,16 @@ body:
   "depth" : 1
 }
 *****************************************
+**To Check Last 5 scans** 
+*****************************************
+
+GET https://watsab.herokuapp.com/getscans
+
+*****************************************
+
+
+Improvements:
+1. DataBase support to log scans and view upto last 5 scans
 
 Future Enhancements:
 1. Include depth assessment for websites to extract links

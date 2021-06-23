@@ -6,8 +6,10 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"webparser/analyzerapp"
 	"webparser/dbapp"
 	"webparser/parserapp/parser"
+	"webparser/parserapp/sitemapbuilder"
 )
 
 //NewLogger is the logger for the GET function
@@ -28,20 +30,44 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 	//get the request from middleware
 	req := r.Context().Value(KeyUser{}).(*MyURLReq)
+
+	//get the list of links from sitemap
+	links := sitemapbuilder.SiteMap(req.URLFromReq, req.MaxDepth, n.l)
+
+	var finalResult []analyzerapp.Response
+
+	//scan based on depth
+	for i, link := range links {
+		//setup req object
+		reqMod := &MyURLReq{}
+		reqMod.URLFromReq = link
+		reqMod.MaxDepth = req.MaxDepth
+		n.l.Printf("Link# %v : %v ", i, link)
+
+		//start scan for url
+		results := startScan(reqMod, n.l, rw)
+		finalResult = append(finalResult, results)
+
+	}
+	//print the response
+	PrintResponse(finalResult, rw, n.l)
+
+	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
+
+}
+
+//startScan will start the scan for a URL
+func startScan(req *MyURLReq, l *log.Logger, rw http.ResponseWriter) analyzerapp.Response {
 	resp, err := http.Get(req.URLFromReq)
 	if err != nil {
-		n.l.Printf("Error fetching URL response", err)
+		l.Printf("Error fetching URL response", err)
 	}
 	defer resp.Body.Close()
 
-	logger := parser.GetMyLogger(n.l, req, Credential.Username)
+	logger := parser.GetMyLogger(l, req, Credential.Username)
 
-	results := logger.Parse(resp.Body)
-
-	//print the response
-	PrintResponse(results, rw, n.l)
-
-	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
+	//results for a link
+	return logger.Parse(resp.Body)
 
 }
 

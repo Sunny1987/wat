@@ -139,7 +139,7 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 }
 
 //PrintResponse will print the final response for scan
-func PrintResponse(results analyzerapp.Response, rw http.ResponseWriter, l *log.Logger) {
+func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *log.Logger) {
 	l.Println("Initiating the response....")
 
 	//Get all Scans list
@@ -156,24 +156,38 @@ func PrintResponse(results analyzerapp.Response, rw http.ResponseWriter, l *log.
 				countRecs++
 			}
 		}
-		if countRecs > 4 {
+		//maximum number of record to be retained
+		maxRetention := 20
+
+		if countRecs > maxRetention {
 
 			// Add logic to delete additional scans
-			for i := 0; i < countRecs-4; i++ {
+			for i := 0; i < countRecs-maxRetention; i++ {
 				dbapp.DeleteAScan(scanmap[i], l)
 			}
 
 			//Add the scan results in db
-			dbapp.AddScan(results, l)
+			for _, result := range results {
+				if result.Person != "" {
+					dbapp.AddScan(result, l)
+				}
+			}
 
 		} else {
 			//Add the scan results in db
-			dbapp.AddScan(results, l)
+			for _, result := range results {
+				if result.Person != "" {
+					dbapp.AddScan(result, l)
+				}
+			}
+
 		}
 	} else {
 		//Add the scan results in db
-		if results.Person != "" {
-			dbapp.AddScan(results, l)
+		for _, result := range results {
+			if result.Person != "" {
+				dbapp.AddScan(result, l)
+			}
 		}
 
 	}

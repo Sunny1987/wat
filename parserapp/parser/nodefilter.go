@@ -3,14 +3,14 @@ package parser
 import "golang.org/x/net/html"
 
 //FilterLinkNodes will give the list of links
-func filterLinkNodes(n *html.Node) []*html.Node {
+func FilterLinkNodes(n *html.Node) []*html.Node {
 
 	if isAnchor(n) {
 		return []*html.Node{n}
 	}
 	var retLnk []*html.Node
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterLinkNodes(c)...)
+		retLnk = append(retLnk, FilterLinkNodes(c)...)
 	}
 	return retLnk
 }

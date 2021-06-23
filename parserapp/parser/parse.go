@@ -42,7 +42,7 @@ func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 	wg.Add(1)
 	go func() {
 		l.Println("Collecting all links...")
-		linkNodes := filterLinkNodes(doc)
+		linkNodes := FilterLinkNodes(doc)
 		if len(linkNodes) > 0 {
 			mu.Lock()
 			nodeMap["linkNodes"] = linkNodes

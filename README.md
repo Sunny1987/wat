@@ -28,18 +28,19 @@ body:
   "depth" : 1
 }
 *****************************************
-**To Check Last 5 scans** 
+**To Check Last 20 scans** 
 *****************************************
 
 GET https://watsab.herokuapp.com/getscans
 
 *****************************************
 
-
 Improvements:
+1. Include depth assessment for websites to extract links
+
+Last Major Enhancement:
 1. DataBase support to log scans and view upto last 5 scans
 
 Future Enhancements:
-1. Include depth assessment for websites to extract links
-2. Add scope for WCAG 2.1 A conformance level guidelines.
+1. Add scope for WCAG 2.1 A conformance level guidelines.
 

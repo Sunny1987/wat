@@ -148,6 +148,9 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 	//Add logic to check scan count in db
 	scanmap := make(map[int]int)
 
+	//max retention count in db
+	maxRetention := 10
+
 	if len(scanResultDB) > 0 {
 		countRecs := 0
 		for _, res := range scanResultDB {
@@ -156,8 +159,6 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 				countRecs++
 			}
 		}
-		//maximum number of record to be retained
-		maxRetention := 20
 
 		if countRecs > maxRetention {
 
@@ -167,27 +168,36 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 			}
 
 			//Add the scan results in db
-			for _, result := range results {
-				if result.Person != "" {
-					dbapp.AddScan(result, l)
+			for index, result := range results {
+				if index <= maxRetention {
+					if result.Person != "" {
+						dbapp.AddScan(result, l)
+					}
 				}
+
 			}
 
 		} else {
 			//Add the scan results in db
-			for _, result := range results {
-				if result.Person != "" {
-					dbapp.AddScan(result, l)
+			for index, result := range results {
+				if index <= maxRetention {
+					if result.Person != "" {
+						dbapp.AddScan(result, l)
+					}
 				}
+
 			}
 
 		}
 	} else {
 		//Add the scan results in db
-		for _, result := range results {
-			if result.Person != "" {
-				dbapp.AddScan(result, l)
+		for index, result := range results {
+			if index < maxRetention {
+				if result.Person != "" {
+					dbapp.AddScan(result, l)
+				}
 			}
+
 		}
 
 	}

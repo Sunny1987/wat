@@ -160,11 +160,13 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 			}
 		}
 
-		if countRecs > maxRetention {
-
-			// Add logic to delete additional scans
-			for i := 0; i < countRecs-maxRetention; i++ {
-				dbapp.DeleteAScan(scanmap[i], l)
+		//logic for record exceeding max retention
+		if len(results) >= maxRetention || countRecs >= maxRetention {
+			// Add logic to delete all scans
+			if countRecs != 0 {
+				for i := 0; i < countRecs; i++ {
+					dbapp.DeleteAScan(scanmap[i], l)
+				}
 			}
 
 			//Add the scan results in db
@@ -176,12 +178,21 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 				}
 
 			}
+		}
 
-		} else {
+		//logic for record within max retention
+		if len(results) < maxRetention {
+
+			// Add logic to delete additional scans
+			if countRecs != 0 {
+				for i := 0; i < len(results); i++ {
+					dbapp.DeleteAScan(scanmap[i], l)
+				}
+			}
+
 			//Add the scan results in db
 			for index, result := range results {
-				if index < maxRetention {
-
+				if index < len(results) {
 					if strings.Contains(result.Person, "guest") || strings.Contains(result.Person, "admin") {
 						dbapp.AddScan(result, l)
 					}

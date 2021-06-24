@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 	"webparser/analyzerapp"
 	"webparser/dbapp"
@@ -21,6 +22,10 @@ type NewLogger struct {
 func GetNewLogger(l *log.Logger) *NewLogger {
 	return &NewLogger{l: l}
 }
+
+var wg sync.WaitGroup
+
+//var mu sync.RWMutex
 
 //GetURLResp will return the WCAG2.1 guidelines result for a URL
 func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
@@ -42,13 +47,21 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 		reqMod := &MyURLReq{}
 		reqMod.URLFromReq = link
 		reqMod.MaxDepth = req.MaxDepth
-		n.l.Printf("Link# %v : %v ", i, link)
 
-		//start scan for url
-		results := startScan(reqMod, n.l, rw)
-		finalResult = append(finalResult, results)
+		wg.Add(1)
+		go func() {
+			n.l.Printf("Link# %v : %v ", i, reqMod.URLFromReq)
+			//start scan for url
+			results := startScan(reqMod, n.l, rw)
+			//mu.Lock()
+			finalResult = append(finalResult, results)
+			//mu.Unlock()
+			wg.Done()
+		}()
 
 	}
+
+	wg.Wait()
 	//print the response
 	PrintResponse(finalResult, rw, n.l)
 

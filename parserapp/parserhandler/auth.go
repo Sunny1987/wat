@@ -63,7 +63,7 @@ func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
 
 	expectedPass, ok := users[Credential.Username]
 	if !ok || expectedPass != Credential.Password {
-		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 		return
 
 	}

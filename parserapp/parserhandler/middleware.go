@@ -35,7 +35,7 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			cookie, err := r.Cookie("token")
 			if err != nil {
 				if err == http.ErrNoCookie {
-					rw.WriteHeader(http.StatusUnauthorized)
+					http.Error(rw, err.Error(), http.StatusUnauthorized)
 					n.l.Printf("Error : %v", err)
 					n.l.Println("*****Exiting middleware******")
 					return
@@ -52,7 +52,7 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			})
 			if err != nil {
 				if err == jwt.ErrSignatureInvalid {
-					rw.WriteHeader(http.StatusUnauthorized)
+					http.Error(rw, err.Error(), http.StatusUnauthorized)
 					n.l.Printf("Error : %v", err)
 					n.l.Println("*****Exiting middleware******")
 
@@ -64,7 +64,7 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 				return
 			}
 			if !tkn.Valid {
-				rw.WriteHeader(http.StatusUnauthorized)
+				http.Error(rw, err.Error(), http.StatusUnauthorized)
 				n.l.Printf("Error : %v", err)
 				n.l.Println("*****Exiting middleware******")
 				return
@@ -73,7 +73,14 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			//perform field validation
 			err = req.Validate()
 			if err != nil {
-				rw.WriteHeader(http.StatusBadRequest)
+				if strings.Contains(err.Error(), "lte") {
+					http.Error(rw, "Max depth equal to or greater than 3 is not allowed", http.StatusBadRequest)
+				}
+				if strings.Contains(err.Error(), "gt") {
+					http.Error(rw, "Min depth less than 0 is not allowed", http.StatusBadRequest)
+				}
+
+				//rw.WriteHeader(http.StatusBadRequest)
 				n.l.Printf("Error : %v", err)
 				n.l.Println("*****Exiting middleware******")
 				return
@@ -90,12 +97,12 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			cookie, err := r.Cookie("token")
 			if err != nil {
 				if err == http.ErrNoCookie {
-					rw.WriteHeader(http.StatusUnauthorized)
+					http.Error(rw, err.Error(), http.StatusUnauthorized)
 					n.l.Printf("Error : %v", err)
 					n.l.Println("*****Exiting middleware******")
 					return
 				}
-				rw.WriteHeader(http.StatusBadRequest)
+				http.Error(rw, err.Error(), http.StatusBadRequest)
 				n.l.Printf("Error : %v", err)
 				n.l.Println("*****Exiting middleware******")
 				return
@@ -107,19 +114,19 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			})
 			if err != nil {
 				if err == jwt.ErrSignatureInvalid {
-					rw.WriteHeader(http.StatusUnauthorized)
+					http.Error(rw, err.Error(), http.StatusUnauthorized)
 					n.l.Printf("Error : %v", err)
 					n.l.Println("*****Exiting middleware******")
 
 					return
 				}
-				rw.WriteHeader(http.StatusBadRequest)
+				http.Error(rw, err.Error(), http.StatusBadRequest)
 				n.l.Printf("Error : %v", err)
 				n.l.Println("*****Exiting middleware******")
 				return
 			}
 			if !tkn.Valid {
-				rw.WriteHeader(http.StatusUnauthorized)
+				http.Error(rw, "Invalid Token please re-login", http.StatusUnauthorized)
 				n.l.Printf("Error : %v", err)
 				n.l.Println("*****Exiting middleware******")
 				return

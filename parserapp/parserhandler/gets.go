@@ -38,26 +38,29 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 	//get the list of links from sitemap
 	links := sitemapbuilder.SiteMap(req.URLFromReq, req.MaxDepth, n.l)
-
+	n.l.Println("***** site map completed*****")
 	var finalResult []analyzerapp.Response
 
 	//scan based on depth
+	wg.Add(len(links))
 	for i, link := range links {
-		//setup req object
-		reqMod := &MyURLReq{}
-		reqMod.URLFromReq = link
-		reqMod.MaxDepth = req.MaxDepth
 
-		wg.Add(1)
-		go func() {
+		go func(link string) {
+			defer wg.Done()
+
+			//setup req object
+			reqMod := &MyURLReq{}
+			reqMod.URLFromReq = link
+			reqMod.MaxDepth = req.MaxDepth
+
 			n.l.Printf("Link# %v : %v ", i, reqMod.URLFromReq)
 			//start scan for url
 			results := startScan(reqMod, n.l, rw)
 			//mu.Lock()
 			finalResult = append(finalResult, results)
 			//mu.Unlock()
-			wg.Done()
-		}()
+
+		}(link)
 
 	}
 

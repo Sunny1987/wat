@@ -15,10 +15,10 @@ import (
 
 func main() {
 	//heroku related updates for port
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Fatal("$PORT must be set")
-	}
+	//port := os.Getenv("PORT")
+	//if port == "" {
+	//	log.Fatal("$PORT must be set")
+	//}
 
 	l := log.New(os.Stdout, "WAT:", log.LstdFlags)
 	parseHandler := parserhandler.GetNewLogger(l)
@@ -38,10 +38,10 @@ func main() {
 	ch := goHandlers.CORS(goHandlers.AllowedOrigins([]string{"*"}))
 
 	//heroku related updates
-	port = ":" + port
+	//port = ":" + port
 
 	//local test
-	//port := ":8080"
+	port := ":8080"
 
 	prodServer := &http.Server{
 		Addr:         port,

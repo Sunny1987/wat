@@ -169,8 +169,8 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 
 			//Add the scan results in db
 			for index, result := range results {
-				if index <= maxRetention {
-					if result.Person != "" {
+				if index < maxRetention {
+					if strings.Contains(result.Person, "guest") || strings.Contains(result.Person, "admin") {
 						dbapp.AddScan(result, l)
 					}
 				}
@@ -180,8 +180,9 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 		} else {
 			//Add the scan results in db
 			for index, result := range results {
-				if index <= maxRetention {
-					if result.Person != "" {
+				if index < maxRetention {
+
+					if strings.Contains(result.Person, "guest") || strings.Contains(result.Person, "admin") {
 						dbapp.AddScan(result, l)
 					}
 				}
@@ -193,7 +194,7 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 		//Add the scan results in db
 		for index, result := range results {
 			if index < maxRetention {
-				if result.Person != "" {
+				if strings.Contains(result.Person, "guest") || strings.Contains(result.Person, "admin") {
 					dbapp.AddScan(result, l)
 				}
 			}

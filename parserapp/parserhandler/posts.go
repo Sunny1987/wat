@@ -1,12 +1,10 @@
 package parserhandler
 
 import (
-	"log"
 	"net/http"
 	"sync"
 	"time"
 	"webparser/analyzerapp"
-	"webparser/parserapp/parser"
 	"webparser/parserapp/sitemapbuilder"
 )
 
@@ -54,20 +52,5 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 	PrintResponse(finalResult, rw, n.l)
 
 	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
-
-}
-
-//startScan will start the scan for a URL
-func startScan(req *MyURLReq, l *log.Logger, rw http.ResponseWriter) analyzerapp.Response {
-	resp, err := http.Get(req.URLFromReq)
-	if err != nil {
-		l.Printf("Error fetching URL response", err)
-	}
-	defer resp.Body.Close()
-
-	logger := parser.GetMyLogger(l, req, Credential.Username)
-
-	//results for a link
-	return logger.Parse(resp.Body)
 
 }

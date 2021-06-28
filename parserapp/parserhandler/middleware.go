@@ -11,6 +11,7 @@ import (
 	"strings"
 	"webparser/analyzerapp"
 	"webparser/dbapp"
+	"webparser/parserapp/parser"
 )
 
 type KeyUser struct{}
@@ -32,41 +33,10 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 				n.l.Printf("Error : %v", err)
 			}
 			n.l.Printf("req: %v", req)
-			cookie, err := r.Cookie("token")
-			if err != nil {
-				if err == http.ErrNoCookie {
-					http.Error(rw, err.Error(), http.StatusUnauthorized)
-					n.l.Printf("Error : %v", err)
-					n.l.Println("*****Exiting middleware******")
-					return
-				}
-				rw.WriteHeader(http.StatusBadRequest)
-				n.l.Printf("Error : %v", err)
-				n.l.Println("*****Exiting middleware******")
-				return
-			}
-			tokenStr := cookie.Value
-			claims := &Claims{}
-			tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-				return jwtKey, nil
-			})
-			if err != nil {
-				if err == jwt.ErrSignatureInvalid {
-					http.Error(rw, err.Error(), http.StatusUnauthorized)
-					n.l.Printf("Error : %v", err)
-					n.l.Println("*****Exiting middleware******")
 
-					return
-				}
-				rw.WriteHeader(http.StatusBadRequest)
-				n.l.Printf("Error : %v", err)
-				n.l.Println("*****Exiting middleware******")
-				return
-			}
-			if !tkn.Valid {
-				http.Error(rw, err.Error(), http.StatusUnauthorized)
-				n.l.Printf("Error : %v", err)
-				n.l.Println("*****Exiting middleware******")
+			//Validate Auth
+			err = AuthValidate(n.l, rw, r)
+			if err != nil {
 				return
 			}
 
@@ -94,48 +64,28 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			next.ServeHTTP(rw, r)
 
 		case "/getscans":
-			cookie, err := r.Cookie("token")
-			if err != nil {
-				if err == http.ErrNoCookie {
-					http.Error(rw, err.Error(), http.StatusUnauthorized)
-					n.l.Printf("Error : %v", err)
-					n.l.Println("*****Exiting middleware******")
-					return
-				}
-				http.Error(rw, err.Error(), http.StatusBadRequest)
-				n.l.Printf("Error : %v", err)
-				n.l.Println("*****Exiting middleware******")
-				return
-			}
-			tokenStr := cookie.Value
-			claims := &Claims{}
-			tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-				return jwtKey, nil
-			})
-			if err != nil {
-				if err == jwt.ErrSignatureInvalid {
-					http.Error(rw, err.Error(), http.StatusUnauthorized)
-					n.l.Printf("Error : %v", err)
-					n.l.Println("*****Exiting middleware******")
 
-					return
-				}
-				http.Error(rw, err.Error(), http.StatusBadRequest)
-				n.l.Printf("Error : %v", err)
-				n.l.Println("*****Exiting middleware******")
-				return
-			}
-			if !tkn.Valid {
-				http.Error(rw, "Invalid Token please re-login", http.StatusUnauthorized)
-				n.l.Printf("Error : %v", err)
-				n.l.Println("*****Exiting middleware******")
+			//Validate Auth
+			err := AuthValidate(n.l, rw, r)
+			if err != nil {
 				return
 			}
 
 			//ctx = context.WithValue(r.Context(), KeyUser{}, req)
 			ctx = context.TODO()
 			r = r.WithContext(ctx)
+			next.ServeHTTP(rw, r)
 
+		case "/upload":
+
+			//Validate Auth
+			err := AuthValidate(n.l, rw, r)
+			if err != nil {
+				return
+			}
+
+			ctx = context.TODO()
+			r = r.WithContext(ctx)
 			next.ServeHTTP(rw, r)
 
 		}
@@ -256,5 +206,65 @@ func ValidateReqUrl(fl validator.FieldLevel) bool {
 	}
 
 	return true
+
+}
+
+//startScan will start the scan for a URL
+func startScan(req *MyURLReq, l *log.Logger, rw http.ResponseWriter) analyzerapp.Response {
+
+	resp, err := http.Get(req.URLFromReq)
+	if err != nil {
+		l.Printf("Error fetching URL response", err)
+	}
+	defer resp.Body.Close()
+
+	logger := parser.GetMyLogger(l, req, Credential.Username)
+
+	//results for a link
+	return logger.Parse(resp.Body)
+
+}
+
+//AuthValidate will validate the cookie before all requests
+func AuthValidate(l *log.Logger, rw http.ResponseWriter, r *http.Request) error {
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Error(rw, err.Error(), http.StatusUnauthorized)
+			l.Printf("Error : %v", err)
+			l.Println("*****Exiting middleware******")
+			return err
+		}
+		rw.WriteHeader(http.StatusBadRequest)
+		l.Printf("Error : %v", err)
+		l.Println("*****Exiting middleware******")
+		return err
+	}
+	tokenStr := cookie.Value
+	claims := &Claims{}
+	tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			http.Error(rw, err.Error(), http.StatusUnauthorized)
+			l.Printf("Error : %v", err)
+			l.Println("*****Exiting middleware******")
+
+			return err
+		}
+		rw.WriteHeader(http.StatusBadRequest)
+		l.Printf("Error : %v", err)
+		l.Println("*****Exiting middleware******")
+		return err
+	}
+	if !tkn.Valid {
+		http.Error(rw, err.Error(), http.StatusUnauthorized)
+		l.Printf("Error : %v", err)
+		l.Println("*****Exiting middleware******")
+		return err
+	}
+
+	return nil
 
 }

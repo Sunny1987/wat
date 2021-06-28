@@ -449,6 +449,7 @@ func trackAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	for _, node := range nodes {
 		var tag Tracktag
 		tag.trackRulesWCAG121(node, l)
+		tag.trackRulesWCAG122(node, l)
 		//l.Printf("tracktag : %v", tag)
 		list = append(list, tag)
 	}

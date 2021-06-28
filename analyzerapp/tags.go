@@ -108,11 +108,12 @@ type Embedtag struct {
 
 //Tracktag is the track based rule results
 type Tracktag struct {
-	Track     string
-	Wc121H96  string
-	Wc121ARIA string
-	Wc111G94  string
-	Wc111H2   string
+	Track      string
+	Wc121H96   string
+	Wc121ARIA  string
+	Wc111G94   string
+	Wc111H2    string
+	Wcag122G87 string
 }
 
 //Applettag is the track based rule results

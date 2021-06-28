@@ -11,11 +11,6 @@ import (
 var wg sync.WaitGroup
 var mu sync.RWMutex
 
-type Link struct {
-	Href string
-	Text string
-}
-
 //Parse will parse the response body
 func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
 	//io.Copy(os.Stdout,r)

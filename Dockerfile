@@ -16,7 +16,7 @@ RUN set -x && \
     strip --strip-unneeded main && \
     upx main
 
-FROM alpine
+FROM scratch
 WORKDIR /root/
 COPY --from=BUILDER /webparser/main .
 COPY --from=BUILDER /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/

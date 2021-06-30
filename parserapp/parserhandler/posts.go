@@ -20,7 +20,7 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 	req := r.Context().Value(KeyUser{}).(*MyURLReq)
 
 	//get the list of links from sitemap
-	links := sitemapbuilder.SiteMap(req.URLFromReq, req.MaxDepth, n.l)
+	links, base := sitemapbuilder.SiteMap(req.URLFromReq, req.MaxDepth, n.l)
 	n.l.Println("***** site map completed*****")
 	var finalResult []analyzerapp.Response
 
@@ -38,7 +38,7 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 			n.l.Printf("Link# %v : %v ", i, reqMod.URLFromReq)
 			//start scan for url
-			results := startScan(reqMod, n.l, rw)
+			results := startScan(reqMod, n.l, base)
 			//mu.Lock()
 			finalResult = append(finalResult, results)
 			//mu.Unlock()

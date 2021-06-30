@@ -1,6 +1,11 @@
 package parser
 
-import "golang.org/x/net/html"
+import (
+	"github.com/go-resty/resty/v2"
+	"golang.org/x/net/html"
+	"log"
+	"strings"
+)
 
 //isAnchor will validate an Anchor tag
 func isAnchor(n *html.Node) bool {
@@ -148,4 +153,61 @@ func isTrack(n *html.Node) bool {
 //isApplet will validate an embed tag
 func isApplet(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "applet"
+}
+
+func isCSSLink(n *html.Node) bool {
+	for _, att := range n.Attr {
+		if att.Key == "rel" && att.Val == "stylesheet" {
+			return true
+		}
+		if att.Key == "type" && att.Val == "text/css" {
+			return true
+		}
+	}
+	return false
+}
+
+//isLink will validate an Anchor tag
+func isLink(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "link"
+}
+
+//HrefLinks will return the formatted links
+func HrefLinks(linkNodes []*html.Node, base string, l *log.Logger) []string {
+
+	l.Println("***Formatting the link nodes****")
+
+	//format the correct links
+	var hrefs []string
+	for _, l := range linkNodes {
+
+		var href string
+		for _, att := range l.Attr {
+			if att.Key == "href" {
+				href = att.Val
+			}
+		}
+		//log.Printf("href : %v",href)
+		switch {
+		case strings.HasPrefix(href, "/"):
+			hrefs = append(hrefs, base+href)
+		case strings.HasPrefix(href, "http"):
+			hrefs = append(hrefs, href)
+		}
+	}
+
+	//wg.Wait()
+	l.Println("***Completed formatting the link nodes****")
+	return hrefs
+}
+
+func readCSSLinks(link string, l *log.Logger) {
+	var client *resty.Client = resty.New()
+	resp, err := client.R().SetHeader("Accept", "application/json").Get(link)
+	if err != nil {
+		l.Println(err)
+
+	}
+	cssList = append(cssList, string(resp.Body()))
+
 }

@@ -2,15 +2,15 @@ package parser
 
 import "golang.org/x/net/html"
 
-//FilterLinkNodes will give the list of links
-func FilterLinkNodes(n *html.Node) []*html.Node {
+//FilterAnchorNodes will give the list of links
+func FilterAnchorNodes(n *html.Node) []*html.Node {
 
 	if isAnchor(n) {
 		return []*html.Node{n}
 	}
 	var retLnk []*html.Node
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, FilterLinkNodes(c)...)
+		retLnk = append(retLnk, FilterAnchorNodes(c)...)
 	}
 	return retLnk
 }
@@ -275,6 +275,31 @@ func filterAppletNodes(n *html.Node) []*html.Node {
 	var retLnk []*html.Node
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		retLnk = append(retLnk, filterAppletNodes(c)...)
+	}
+	return retLnk
+}
+
+//filterCSSLinks will filter all the CSS based links
+func filterCSSLinks(list []*html.Node) []*html.Node {
+	var retLnk []*html.Node
+
+	for _, n := range list {
+		if isCSSLink(n) {
+			retLnk = append(retLnk, n)
+		}
+	}
+	return retLnk
+}
+
+//FilterLinkNodes will give the list of links
+func FilterLinkNodes(n *html.Node) []*html.Node {
+
+	if isLink(n) {
+		return []*html.Node{n}
+	}
+	var retLnk []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		retLnk = append(retLnk, FilterLinkNodes(c)...)
 	}
 	return retLnk
 }

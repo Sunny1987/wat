@@ -15,8 +15,8 @@ var wg sync.WaitGroup
 //var wg1 sync.WaitGroup
 
 //SiteMap is the sitemap builder for the website
-func SiteMap(urlStr string, depth int, l *log.Logger) []string {
-
+func SiteMap(urlStr string, depth int, l *log.Logger) ([]string, string) {
+	var baseUrl string
 	l.Println("**** Initiate site map build*****")
 	seen := make(map[string]struct{})
 	var q map[string]struct{}
@@ -35,7 +35,9 @@ func SiteMap(urlStr string, depth int, l *log.Logger) []string {
 			}
 			l.Printf("Adding to seen: %v", url)
 			seen[url] = struct{}{}
-			for _, link := range getLinks(url, l) {
+			links, base := GetLinks(url, l)
+			baseUrl = base
+			for _, link := range links {
 				nq[link] = struct{}{}
 			}
 		}
@@ -45,11 +47,11 @@ func SiteMap(urlStr string, depth int, l *log.Logger) []string {
 		ret = append(ret, url)
 	}
 	l.Println("**** finalizing site map build****")
-	return ret
+	return ret, baseUrl
 }
 
-//getLinks will return thr filtered links
-func getLinks(url string, l *log.Logger) []string {
+//GetLinks will return thr filtered links
+func GetLinks(url string, l *log.Logger) ([]string, string) {
 	l.Println("*****Starting to get filtered links****")
 	resp, err := http.Get(url)
 	if err != nil {
@@ -66,7 +68,7 @@ func getLinks(url string, l *log.Logger) []string {
 	l.Println("****getting the linkNodes*****")
 
 	//get the link nodes list
-	linkNodes := parser.FilterLinkNodes(doc)
+	linkNodes := parser.FilterAnchorNodes(doc)
 	reqUrl := resp.Request.URL
 
 	l.Println("*** build base url****")
@@ -77,11 +79,11 @@ func getLinks(url string, l *log.Logger) []string {
 	base := baseUrl.String()
 
 	//get formatted and filtered links
-	return hrefs(linkNodes, base, l)
+	return Hrefs(linkNodes, base, l), base
 }
 
-//hrefs will return the formatted links
-func hrefs(linkNodes []*html.Node, base string, l *log.Logger) []string {
+//Hrefs will return the formatted links
+func Hrefs(linkNodes []*html.Node, base string, l *log.Logger) []string {
 
 	l.Println("***Formatting the link nodes****")
 

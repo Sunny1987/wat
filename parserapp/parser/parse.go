@@ -8,11 +8,14 @@ import (
 	"webparser/analyzerapp"
 )
 
-var wg sync.WaitGroup
-var mu sync.RWMutex
+var (
+	wg      sync.WaitGroup
+	mu      sync.RWMutex
+	cssList []string
+)
 
 //Parse will parse the response body
-func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
+func (ml *MyLogger) Parse(r io.Reader, base string) analyzerapp.Response {
 	//io.Copy(os.Stdout,r)
 	doc, err := html.Parse(r)
 	if err != nil {
@@ -20,27 +23,27 @@ func (ml *MyLogger) Parse(r io.Reader) analyzerapp.Response {
 	}
 
 	//get all nodes in map
-	nodeMap := collectNodes(doc, ml.l)
+	nodeMap := collectNodes(doc, ml.l, base)
 
 	//initiate analysis
 	ml.l.Println("Initiating WCAG 2.1 analysis.....")
-	results := analyzerapp.Analysis(ml.l, ml.req, ml.person).ApplyRules(nodeMap)
+	results := analyzerapp.Analysis(ml.l, ml.req, ml.person).ApplyRules(nodeMap, cssList)
 	return results
 
 }
 
 //collectNodes collects all the nodes and stores in nodeMap
-func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
+func collectNodes(doc *html.Node, l *log.Logger, base string) map[string][]*html.Node {
 	//List of link nodes
 	nodeMap := make(map[string][]*html.Node)
 
 	wg.Add(1)
 	go func() {
-		l.Println("Collecting all links...")
-		linkNodes := FilterLinkNodes(doc)
+		l.Println("Collecting all anchors...")
+		linkNodes := FilterAnchorNodes(doc)
 		if len(linkNodes) > 0 {
 			mu.Lock()
-			nodeMap["linkNodes"] = linkNodes
+			nodeMap["anchorNodes"] = linkNodes
 			mu.Unlock()
 		}
 		wg.Done()
@@ -347,6 +350,30 @@ func collectNodes(doc *html.Node, l *log.Logger) map[string][]*html.Node {
 		wg.Done()
 
 	}()
+
+	wg.Add(1)
+	go func(base string) {
+		l.Println("Collecting all links...")
+
+		//get all links
+		linkNodes := FilterLinkNodes(doc)
+		l.Printf("base link: %v", base)
+
+		//collect CSS links
+		cssLinks := HrefLinks(filterCSSLinks(linkNodes), base, l)
+		for _, link := range cssLinks {
+			l.Println(link)
+			readCSSLinks(link, l)
+		}
+
+		if len(linkNodes) > 0 {
+			mu.Lock()
+			nodeMap["linkNodes"] = linkNodes
+			mu.Unlock()
+		}
+		wg.Done()
+
+	}(base)
 
 	wg.Wait()
 	return nodeMap

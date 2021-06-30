@@ -22,7 +22,7 @@ var wg sync.WaitGroup
 var mu sync.RWMutex
 
 //ApplyRules will initiate rule application
-func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
+func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node, cssList []string) Response {
 	l.l.Println("Initiating Rules Check....")
 	var ruleResults Response
 
@@ -131,7 +131,7 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 		wg.Done()
 	}()
 
-	//link analysis
+	//anchor analysis
 	wg.Add(1)
 	go func() {
 		myMap := linkAnalysis(l.l, nodeMap)
@@ -184,6 +184,13 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node) Response {
 		mu.RUnlock()
 		ruleResults.TrackResults = myList
 		wg.Done()
+	}()
+
+	//css analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cssAnalysis(l.l, cssList)
 	}()
 
 	wg.Wait()
@@ -366,7 +373,7 @@ func iframeAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 //linkAnalysis function initiates all the link rule based analysis
 func linkAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Anchortag {
 	l.Println("Initiating Anchor tag Analysis......")
-	nodes := nodeMap["linkNodes"]
+	nodes := nodeMap["anchorNodes"]
 
 	var issues = make(map[string][]Anchortag)
 	var list []Anchortag
@@ -457,4 +464,12 @@ func trackAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	issues["track"] = list
 
 	return issues
+}
+
+//cssAnalysis function initiates all the CSS rule based analysis
+func cssAnalysis(l *log.Logger, cssLink []string) {
+	l.Println("Initiating track tag Analysis......")
+	for _, css := range cssLink {
+		l.Printf("CSS : %v ", css)
+	}
 }

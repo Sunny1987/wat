@@ -210,7 +210,7 @@ func ValidateReqUrl(fl validator.FieldLevel) bool {
 }
 
 //startScan will start the scan for a URL
-func startScan(req *MyURLReq, l *log.Logger, rw http.ResponseWriter) analyzerapp.Response {
+func startScan(req *MyURLReq, l *log.Logger, base string) analyzerapp.Response {
 
 	resp, err := http.Get(req.URLFromReq)
 	if err != nil {
@@ -221,7 +221,7 @@ func startScan(req *MyURLReq, l *log.Logger, rw http.ResponseWriter) analyzerapp
 	logger := parser.GetMyLogger(l, req, Credential.Username)
 
 	//results for a link
-	return logger.Parse(resp.Body)
+	return logger.Parse(resp.Body, base)
 
 }
 

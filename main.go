@@ -28,6 +28,7 @@ func main() {
 	postRouter := serverMux.Methods("POST").Subrouter()
 	postRouter.HandleFunc("/scan", parseHandler.GetURLResp)
 	postRouter.HandleFunc("/login", parseHandler.Login)
+	postRouter.HandleFunc("/uploadhtml", parseHandler.FileScan)
 	postRouter.Use(parseHandler.MiddlewareValidation)
 
 	getRouter := serverMux.Methods("GET").Subrouter()

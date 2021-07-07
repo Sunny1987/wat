@@ -4,279 +4,117 @@ import "golang.org/x/net/html"
 
 //FilterAnchorNodes will give the list of links
 func FilterAnchorNodes(n *html.Node) []*html.Node {
-
-	if isAnchor(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, FilterAnchorNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isAnchor)
 }
 
 //filterDivNodes will give the list of divs
 func filterDivNodes(n *html.Node) []*html.Node {
-	if isDiv(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterDivNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isDiv)
 }
 
-//filterDivNodes will give the list of divs
+//filterParaNodes will give the list of divs
 func filterParaNodes(n *html.Node) []*html.Node {
-	if isParagraph(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterParaNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isParagraph)
 }
 
 //filterSpanNodes will give the list of spans
 func filterSpanNodes(n *html.Node) []*html.Node {
-	if isSpan(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterSpanNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isSpan)
 }
 
 //filterH1Nodes will give the list of H1
 func filterH1Nodes(n *html.Node) []*html.Node {
-	if isH1(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterH1Nodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isH1)
 }
 
 //filterH2Nodes will give the list of H2
 func filterH2Nodes(n *html.Node) []*html.Node {
-	if isH2(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterH2Nodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isH2)
 }
 
 //filterH3Nodes will give the list of H3
 func filterH3Nodes(n *html.Node) []*html.Node {
-	if isH3(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterH3Nodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isH3)
 }
 
 //filterH4Nodes will give the list of H4
 func filterH4Nodes(n *html.Node) []*html.Node {
-	if isH4(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterH4Nodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isH4)
 }
 
 //filterH5Nodes will give the list of H5
 func filterH5Nodes(n *html.Node) []*html.Node {
-	if isH5(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterH5Nodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isH5)
 }
 
 //filterH6Nodes will give the list of H6
 func filterH6Nodes(n *html.Node) []*html.Node {
-	if isH6(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterH6Nodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isH6)
 }
 
 //filterImageNodes will give the list of image
 func filterImageNodes(n *html.Node) []*html.Node {
-	if isImage(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterImageNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isImage)
 }
 
 //filterInputNodes will give the list of input
 func filterInputNodes(n *html.Node) []*html.Node {
-	if isInput(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterInputNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isInput)
 }
 
 //filterButtonNodes will give the list of button
 func filterButtonNodes(n *html.Node) []*html.Node {
-	if isButton(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterButtonNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isButton)
 }
 
 //filterVideoNodes will give the list of video
 func filterVideoNodes(n *html.Node) []*html.Node {
-	if isVideo(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterVideoNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isVideo)
 }
 
 //filterAudioNodes will give the list of audio
 func filterAudioNodes(n *html.Node) []*html.Node {
-	if isAudio(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterAudioNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isAudio)
 }
 
 //filterSelectNodes will give the list of select
 func filterSelectNodes(n *html.Node) []*html.Node {
-	if isSelect(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterSelectNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isSelect)
 }
 
 //filterTextAreaNodes will give the list of TextArea
 func filterTextAreaNodes(n *html.Node) []*html.Node {
-	if isTextArea(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterTextAreaNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isTextArea)
 }
 
 //filterIframeNodes will give the list of iframes
 func filterIframeNodes(n *html.Node) []*html.Node {
-	if isIFrame(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterIframeNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isIFrame)
 }
 
 //filterAreaNodes will give the list of areas
 func filterAreaNodes(n *html.Node) []*html.Node {
-	if isArea(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterAreaNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isArea)
 }
 
 //filterObjectNodes will give the list of objects
 func filterObjectNodes(n *html.Node) []*html.Node {
-	if isObject(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterObjectNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isObject)
 }
 
 //filterEmbedNodes will give the list of embeds
 func filterEmbedNodes(n *html.Node) []*html.Node {
-	if isEmbed(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterEmbedNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isEmbed)
 }
 
 //filterTrackNodes will give the list of tracks
 func filterTrackNodes(n *html.Node) []*html.Node {
-	if isTrack(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterTrackNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isTrack)
 }
 
 //filterAppletNodes will give the list of tracks
 func filterAppletNodes(n *html.Node) []*html.Node {
-	if isApplet(n) {
-		return []*html.Node{n}
-	}
-	var retLnk []*html.Node
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, filterAppletNodes(c)...)
-	}
-	return retLnk
+	return filterNode(n, isApplet)
 }
 
 //filterCSSLinks will filter all the CSS based links
@@ -293,13 +131,24 @@ func filterCSSLinks(list []*html.Node) []*html.Node {
 
 //FilterLinkNodes will give the list of links
 func FilterLinkNodes(n *html.Node) []*html.Node {
+	return filterNode(n, isLink)
+}
 
-	if isLink(n) {
-		return []*html.Node{n}
-	}
+//filterNode is common filter method for all nodes
+func filterNode(n *html.Node, f func(node *html.Node) bool) []*html.Node {
 	var retLnk []*html.Node
+	if f(n) {
+		retLnk = append(retLnk, n)
+		if hasChildren(n) {
+			for c := n.FirstChild; c != nil; c = c.NextSibling {
+				retLnk = append(retLnk, filterNode(c, f)...)
+			}
+		}
+	}
+
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		retLnk = append(retLnk, FilterLinkNodes(c)...)
+		retLnk = append(retLnk, filterNode(c, f)...)
 	}
 	return retLnk
+
 }

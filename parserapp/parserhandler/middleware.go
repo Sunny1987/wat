@@ -76,7 +76,7 @@ func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 			r = r.WithContext(ctx)
 			next.ServeHTTP(rw, r)
 
-		case "/upload":
+		case "/uploadhtml":
 
 			//Validate Auth
 			err := AuthValidate(n.l, rw, r)
@@ -212,16 +212,24 @@ func ValidateReqUrl(fl validator.FieldLevel) bool {
 //startScan will start the scan for a URL
 func startScan(req *MyURLReq, l *log.Logger, base string) analyzerapp.Response {
 
-	resp, err := http.Get(req.URLFromReq)
-	if err != nil {
-		l.Printf("Error fetching URL response", err)
+	if req.File == nil {
+		resp, err := http.Get(req.URLFromReq)
+		if err != nil {
+			l.Printf("Error fetching URL response", err)
+		}
+		defer resp.Body.Close()
+
+		logger := parser.GetMyLogger(l, req, Credential.Username)
+
+		//results for a link
+		return logger.Parse(resp.Body, base)
+
+	} else {
+
+		logger := parser.GetMyLogger(l, req, Credential.Username)
+		return logger.Parse(req.File, base)
+
 	}
-	defer resp.Body.Close()
-
-	logger := parser.GetMyLogger(l, req, Credential.Username)
-
-	//results for a link
-	return logger.Parse(resp.Body, base)
 
 }
 

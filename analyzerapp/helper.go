@@ -1,6 +1,9 @@
 package analyzerapp
 
-import "golang.org/x/net/html"
+import (
+	"golang.org/x/net/html"
+	"strings"
+)
 
 //attributeSearch will respond if the attribute is present
 func attributeSearch(attrList []html.Attribute, key string) bool {
@@ -59,22 +62,22 @@ func nodeText(n *html.Node) string {
 
 	switch n.Data {
 	case "div":
-		if hasChildren(n) {
-			res = "<div " + str + ">" + n.FirstChild.Data + "</div>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<div " + str + ">" + text(n) + "</div>"
 		} else {
 			res = "<div " + str + "/>"
 		}
 
 	case "button":
-		if hasChildren(n) {
-			res = "<button " + str + ">" + n.FirstChild.Data + "</button>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<button " + str + ">" + text(n) + "</button>"
 		} else {
 			res = "<button " + str + "/>"
 		}
 
 	case "input":
-		if hasChildren(n) {
-			res = "<button " + str + ">" + n.FirstChild.Data + "</button>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<button " + str + ">" + text(n) + "</button>"
 		} else {
 			res = "<input " + str + "/>"
 		}
@@ -84,65 +87,38 @@ func nodeText(n *html.Node) string {
 	case "select":
 		res = "<select " + str + "/>"
 	case "textarea":
-		if hasChildren(n) {
-			res = "<textarea " + str + ">" + n.FirstChild.Data + "</textarea>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<textarea " + str + ">" + text(n) + "</textarea>"
 		} else {
 			res = "<textarea " + str + "/>"
 		}
 	case "a":
-		if hasChildren(n) {
-			res = "<a " + str + ">" + n.FirstChild.Data + "</a>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<a " + str + ">" + text(n) + "</a>"
 		} else {
 			res = "<a " + str + "/>"
 		}
 	case "span":
-		if hasChildren(n) {
-			res = "<span " + str + ">" + n.FirstChild.Data + "</span>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<span " + str + ">" + text(n) + "</span>"
 		} else {
 			res = "<span " + str + "/>"
 		}
 	case "h1":
-		if hasChildren(n) {
-			res = "<h1 " + str + ">" + n.FirstChild.Data + "</h1>"
-		} else {
-			res = "<h1 " + str + "/>"
-		}
+		res = "<h1 " + str + ">" + text(n) + "</h1>"
 	case "h2":
-		if hasChildren(n) {
-			res = "<h2 " + str + ">" + n.FirstChild.Data + "</h2>"
-		} else {
-			res = "<h2 " + str + "/>"
-		}
+		res = "<h2 " + str + ">" + text(n) + "</h2>"
 	case "h3":
-		if hasChildren(n) {
-			res = "<h3 " + str + ">" + n.FirstChild.Data + "</h3>"
-		} else {
-			res = "<h3 " + str + "/>"
-		}
+		res = "<h3 " + str + ">" + text(n) + "</h3>"
 	case "h4":
-		if hasChildren(n) {
-			res = "<h4 " + str + ">" + n.FirstChild.Data + "</h4>"
-		} else {
-			res = "<h4 " + str + "/>"
-		}
-
+		res = "<h4 " + str + ">" + text(n) + "</h4>"
 	case "h5":
-		if hasChildren(n) {
-			res = "<h5 " + str + ">" + n.FirstChild.Data + "</h5>"
-		} else {
-			res = "<h5 " + str + "/>"
-		}
-
+		res = "<h5 " + str + ">" + text(n) + "</h5>"
 	case "h6":
-		if hasChildren(n) {
-			res = "<h6 " + str + ">" + n.FirstChild.Data + "</h6>"
-		} else {
-			res = "<h6 " + str + "/>"
-		}
-
+		res = "<h6 " + str + ">" + text(n) + "</h6>"
 	case "p":
-		if hasChildren(n) {
-			res = "<p " + str + ">" + n.FirstChild.Data + "</p>"
+		if hasChildren(n) || text(n) != "" {
+			res = "<p " + str + ">" + text(n) + "</p>"
 		} else {
 			res = "<p " + str + "/>"
 		}
@@ -159,8 +135,23 @@ func nodeText(n *html.Node) string {
 
 //isTextNode will validate if node is TextNode
 func isTextNode(n *html.Node) bool {
-	if n.Type == html.TextNode && n.DataAtom == 0 {
+	if n.Type == html.TextNode {
 		return true
 	}
 	return false
+}
+
+//text will get the text value of the node
+func text(n *html.Node) string {
+	if isTextNode(n) {
+		return n.Data
+	}
+	if n.Type != html.ElementNode {
+		return ""
+	}
+	var ret string
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		ret = text(c) + " "
+	}
+	return strings.Join(strings.Fields(ret), " ")
 }

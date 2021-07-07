@@ -193,6 +193,78 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node, cssList []st
 		cssAnalysis(l.l, cssList)
 	}()
 
+	//h1 analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := h1Analysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["h1"]
+		mu.RUnlock()
+		ruleResults.H1Results = myList
+
+	}()
+
+	//h2 analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := h2Analysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["h2"]
+		mu.RUnlock()
+		ruleResults.H2Results = myList
+
+	}()
+
+	//h3 analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := h3Analysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["h3"]
+		mu.RUnlock()
+		ruleResults.H3Results = myList
+
+	}()
+
+	//h4 analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := h4Analysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["h4"]
+		mu.RUnlock()
+		ruleResults.H4Results = myList
+
+	}()
+
+	//h5 analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := h5Analysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["h5"]
+		mu.RUnlock()
+		ruleResults.H5Results = myList
+
+	}()
+
+	//h6 analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := h6Analysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["h6"]
+		mu.RUnlock()
+		ruleResults.H6Results = myList
+
+	}()
+
 	wg.Wait()
 	return ruleResults
 }
@@ -206,7 +278,13 @@ func divAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Di
 	var list []Divtag
 	for _, node := range nodes {
 		var tag Divtag
+
+		//build the node
+		tag.Div = nodeText(node)
+
+		//implement rules
 		tag.divRulesWCAG111(node, l)
+
 		//l.Printf("divTag : %v", tag)
 		list = append(list, tag)
 	}
@@ -225,6 +303,11 @@ func buttonAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	var list []Buttontag
 	for _, node := range nodes {
 		var tag Buttontag
+
+		//build the node
+		tag.Button = nodeText(node)
+
+		//implement rules
 		tag.buttonRulesWCAG111(node, l)
 		//l.Printf("buttonTag : %v", tag)
 		list = append(list, tag)
@@ -244,6 +327,11 @@ func inputAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	var list []Inputtag
 	for _, node := range nodes {
 		var tag Inputtag
+
+		//build the node
+		tag.Input = nodeText(node)
+
+		//implement the rules
 		tag.inputRulesWCAG111(node, l)
 		//l.Printf("inputTag : %v", tag)
 		list = append(list, tag)
@@ -263,6 +351,11 @@ func imagesAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	var list []Imgtag
 	for _, node := range nodes {
 		var tag Imgtag
+
+		//build the nodes
+		tag.Img = nodeText(node)
+
+		//implement the rules
 		tag.imagesRulesWCAG111(node, l)
 		//l.Printf("imageTag : %v", tag)
 		list = append(list, tag)
@@ -282,6 +375,11 @@ func videoAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	var list []Videotag
 	for _, node := range nodes {
 		var tag Videotag
+
+		//build the node
+		tag.Video = nodeText(node)
+
+		//implement the rules
 		tag.videoRulesWCAG111(node, l)
 		tag.videoRulesWCAG121(node, l)
 		//l.Printf("videoTag : %v", tag)
@@ -302,6 +400,11 @@ func audioAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	var list []Audiotag
 	for _, node := range nodes {
 		var tag Audiotag
+
+		//build the node
+		tag.Audio = nodeText(node)
+
+		//implement the rules
 		tag.audioRulesWCAG111(node, l)
 		tag.audioRulesWCAG121(node, l)
 		//l.Printf("audioTag : %v", tag)
@@ -322,6 +425,11 @@ func textareaAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string
 	var list []Textareatag
 	for _, node := range nodes {
 		var tag Textareatag
+
+		//build the node
+		tag.Textarea = nodeText(node)
+
+		//implement the rule
 		tag.textAreaRulesWCAG111(node, l)
 		//l.Printf("textareaTag : %v", tag)
 		list = append(list, tag)
@@ -341,6 +449,11 @@ func selectAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	var list []Selecttag
 	for _, node := range nodes {
 		var tag Selecttag
+
+		//build the node
+		tag.Select = nodeText(node)
+
+		//implement the rule
 		tag.selectRulesWCAG111(node, l)
 		//l.Printf("selectTag : %v", tag)
 		list = append(list, tag)
@@ -360,6 +473,11 @@ func iframeAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	var list []Iframetag
 	for _, node := range nodes {
 		var tag Iframetag
+
+		//build the node
+		tag.Iframe = nodeText(node)
+
+		//implement the rule
 		tag.iframeRulesWCAG111(node, l)
 		//l.Printf("iframeTag : %v", tag)
 		list = append(list, tag)
@@ -379,6 +497,11 @@ func linkAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]A
 	var list []Anchortag
 	for _, node := range nodes {
 		var tag Anchortag
+
+		//build the node
+		tag.Anchor = nodeText(node)
+
+		//implement the rule
 		tag.linkRulesWCAG111(node, l)
 		//l.Printf("Anchortag : %v", tag)
 		list = append(list, tag)
@@ -398,6 +521,11 @@ func areaAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]A
 	var list []Areatag
 	for _, node := range nodes {
 		var tag Areatag
+
+		//build the node
+		tag.Area = nodeText(node)
+
+		//implement the rule
 		tag.areaRulesWCAG111(node, l)
 		//l.Printf("Areatag : %v", tag)
 		list = append(list, tag)
@@ -417,6 +545,11 @@ func objectAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][
 	var list []Objecttag
 	for _, node := range nodes {
 		var tag Objecttag
+
+		//build the node
+		tag.Object = nodeText(node)
+
+		//implement the rules
 		tag.objectRulesWCAG121(node, l)
 		//l.Printf("Objecttag : %v", tag)
 		list = append(list, tag)
@@ -436,6 +569,11 @@ func embedAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	var list []Embedtag
 	for _, node := range nodes {
 		var tag Embedtag
+
+		//build the node
+		tag.Embed = nodeText(node)
+
+		//implement teh rule
 		tag.embedRulesWCAG121(node, l)
 		//l.Printf("Embedtag : %v", tag)
 		list = append(list, tag)
@@ -455,6 +593,11 @@ func trackAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]
 	var list []Tracktag
 	for _, node := range nodes {
 		var tag Tracktag
+
+		//build the node
+		tag.Track = nodeText(node)
+
+		//implement the rule
 		tag.trackRulesWCAG121(node, l)
 		tag.trackRulesWCAG122(node, l)
 		//l.Printf("tracktag : %v", tag)
@@ -472,4 +615,135 @@ func cssAnalysis(l *log.Logger, cssLink []string) {
 	for _, css := range cssLink {
 		l.Printf("CSS : %v ", css)
 	}
+}
+
+//h1Analysis function initiates all the h1 rule based analysis
+func h1Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H1tag {
+	l.Println("Initiating h1 tag Analysis......")
+	nodes := nodeMap["h1Nodes"]
+	var issues = make(map[string][]H1tag)
+	var list []H1tag
+
+	for _, node := range nodes {
+		var tag H1tag
+
+		//build the node
+		tag.H1 = nodeText(node)
+
+		//implement the rule
+		tag.h1RulesWCAG241(node, l)
+		list = append(list, tag)
+
+	}
+	issues["h1"] = list
+	return issues
+}
+
+//h2Analysis function initiates all the h2 rule based analysis
+func h2Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H2tag {
+	l.Println("Initiating h2 tag Analysis......")
+	nodes := nodeMap["h2Nodes"]
+	var issues = make(map[string][]H2tag)
+	var list []H2tag
+
+	for _, node := range nodes {
+		var tag H2tag
+
+		//build the node
+		tag.H2 = nodeText(node)
+
+		//implement the rule
+		tag.h2RulesWCAG241(node, l)
+		list = append(list, tag)
+
+	}
+	issues["h2"] = list
+	return issues
+}
+
+//h3Analysis function initiates all the h3 rule based analysis
+func h3Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H3tag {
+	l.Println("Initiating h3 tag Analysis......")
+	nodes := nodeMap["h3Nodes"]
+	var issues = make(map[string][]H3tag)
+	var list []H3tag
+
+	for _, node := range nodes {
+		var tag H3tag
+
+		//build the node
+		tag.H3 = nodeText(node)
+
+		//implement the rule
+
+		list = append(list, tag)
+
+	}
+	issues["h3"] = list
+	return issues
+}
+
+//h4Analysis function initiates all the h4 rule based analysis
+func h4Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H4tag {
+	l.Println("Initiating h4 tag Analysis......")
+	nodes := nodeMap["h4Nodes"]
+	var issues = make(map[string][]H4tag)
+	var list []H4tag
+
+	for _, node := range nodes {
+		var tag H4tag
+
+		//build the node
+		tag.H4 = nodeText(node)
+
+		//implement the rule
+		list = append(list, tag)
+
+	}
+	issues["h4"] = list
+	return issues
+}
+
+//h5Analysis function initiates all the h5 rule based analysis
+func h5Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H5tag {
+	l.Println("Initiating h5 tag Analysis......")
+	nodes := nodeMap["h5Nodes"]
+	var issues = make(map[string][]H5tag)
+	var list []H5tag
+
+	for _, node := range nodes {
+		var tag H5tag
+
+		//build the node
+		tag.H5 = nodeText(node)
+
+		//implement the rule
+
+		list = append(list, tag)
+
+	}
+	issues["h5"] = list
+	return issues
+}
+
+//h6Analysis function initiates all the h6 rule based analysis
+func h6Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H6tag {
+	l.Println("Initiating h6 tag Analysis......")
+	nodes := nodeMap["h6Nodes"]
+	var issues = make(map[string][]H6tag)
+	var list []H6tag
+
+	for _, node := range nodes {
+		var tag H6tag
+
+		//build the node
+		tag.H6 = nodeText(node)
+
+		//implement the rule
+
+		list = append(list, tag)
+
+	}
+	issues["h6"] = list
+	return issues
 }

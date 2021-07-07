@@ -16,28 +16,15 @@ var listEx = []string{".mpg", ".mpeg", ".avi", ".wmv", ".mov", ".rm", ".ram", ".
 //audioRulesWCAG121 will check all WCAG1.2.1 techniques
 func (d *Audiotag) audioRulesWCAG121(node *html.Node, l *log.Logger) {
 
-	// creating audio object
-	if d.Audio != "" {
-		d.Audio = nodeText(node)
-	}
-
 }
 
 //videoRulesWCAG121 will check all WCAG1.2.1 techniques
 func (d *Videotag) videoRulesWCAG121(node *html.Node, l *log.Logger) {
 
-	// creating video object
-	if d.Video != "" {
-		d.Video = nodeText(node)
-	}
-
 }
 
 //objectRulesWCAG121 will check all WCAG1.2.1 techniques
 func (d *Objecttag) objectRulesWCAG121(node *html.Node, l *log.Logger) {
-
-	// creating object object
-	d.Object = nodeText(node)
 
 	//G166
 	l.Println("Starting processing : G166")
@@ -57,9 +44,6 @@ func (d *Objecttag) objectRulesWCAG121(node *html.Node, l *log.Logger) {
 //embedRulesWCAG121 will check all WCAG1.2.1 techniques
 func (d *Embedtag) embedRulesWCAG121(node *html.Node, l *log.Logger) {
 
-	// creating div object
-	d.Embed = nodeText(node)
-
 	//G166
 	l.Println("Starting processing : G166")
 
@@ -77,9 +61,6 @@ func (d *Embedtag) embedRulesWCAG121(node *html.Node, l *log.Logger) {
 
 //trackRulesWCAG121 will check all WCAG1.2.1 techniques
 func (d *Tracktag) trackRulesWCAG121(node *html.Node, l *log.Logger) {
-
-	// creating div object
-	d.Track = nodeText(node)
 
 	//H96
 	l.Println("Starting processing : H96")

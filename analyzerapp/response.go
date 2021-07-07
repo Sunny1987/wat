@@ -19,4 +19,10 @@ type Response struct {
 	ObjectResults   []Objecttag   `json:"objects"`
 	EmbedResults    []Embedtag    `json:"embeds"`
 	TrackResults    []Tracktag    `json:"tracks"`
+	H1Results       []H1tag       `json:"h1s"`
+	H2Results       []H2tag       `json:"h2s"`
+	H3Results       []H3tag       `json:"h3s"`
+	H4Results       []H4tag       `json:"h4s"`
+	H5Results       []H5tag       `json:"h5s"`
+	H6Results       []H6tag       `json:"h6s"`
 }

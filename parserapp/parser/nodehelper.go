@@ -211,3 +211,18 @@ func readCSSLinks(link string, l *log.Logger) {
 	cssList = append(cssList, string(resp.Body()))
 
 }
+
+//hasNoChild will check if node has child
+func hasNoChild(n *html.Node) bool {
+	return n.FirstChild == nil
+}
+
+//hasChildren will check if node has children
+func hasChildren(n *html.Node) bool {
+	return n.FirstChild != nil && n.FirstChild != n.LastChild
+}
+
+//hasOneChild will check if node has only one child
+func hasOneChild(n *html.Node) bool {
+	return n.FirstChild != nil && n.FirstChild == n.LastChild
+}

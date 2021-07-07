@@ -265,6 +265,18 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node, cssList []st
 
 	}()
 
+	//para analysis
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		myMap := paraAnalysis(l.l, nodeMap)
+		mu.RLock()
+		myList := myMap["para"]
+		mu.RUnlock()
+		ruleResults.ParaResults = myList
+
+	}()
+
 	wg.Wait()
 	return ruleResults
 }
@@ -745,5 +757,27 @@ func h6Analysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]H6t
 
 	}
 	issues["h6"] = list
+	return issues
+}
+
+//paraAnalysis function initiates all the paragraphs rule based analysis
+func paraAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) map[string][]Paratag {
+	l.Println("Initiating para tag Analysis......")
+	nodes := nodeMap["paraNodes"]
+	var issues = make(map[string][]Paratag)
+	var list []Paratag
+
+	for _, node := range nodes {
+		var tag Paratag
+
+		//build the node
+		tag.Para = nodeText(node)
+
+		//implement the rule
+
+		list = append(list, tag)
+
+	}
+	issues["para"] = list
 	return issues
 }

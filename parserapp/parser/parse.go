@@ -37,345 +37,70 @@ func collectNodes(doc *html.Node, l *log.Logger, base string) map[string][]*html
 	//List of link nodes
 	nodeMap := make(map[string][]*html.Node)
 
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all anchors...")
-		linkNodes := FilterAnchorNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["anchorNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of Divs
-		l.Println("Collecting all divs...")
-		divNodes := filterDivNodes(doc)
-		if len(divNodes) > 0 {
-			mu.Lock()
-			nodeMap["divNodes"] = divNodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of Paragraphs
-		l.Println("Collecting all paragraphs...")
-		paraNodes := filterParaNodes(doc)
-		if len(paraNodes) > 0 {
-			mu.Lock()
-			nodeMap["paraNodes"] = paraNodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of spans
-		l.Println("Collecting all spans...")
-		spanNodes := filterSpanNodes(doc)
-		if len(spanNodes) > 0 {
-			mu.Lock()
-			nodeMap["spanNodes"] = spanNodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of h1
-		l.Println("Collecting all h1...")
-		h1Nodes := filterH1Nodes(doc)
-		if len(h1Nodes) > 0 {
-			mu.Lock()
-			nodeMap["h1Nodes"] = h1Nodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of h2
-		l.Println("Collecting all h2...")
-		h2Nodes := filterH2Nodes(doc)
-		if len(h2Nodes) > 0 {
-			mu.Lock()
-			nodeMap["h2Nodes"] = h2Nodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of h3
-		l.Println("Collecting all h3...")
-		h3Nodes := filterH3Nodes(doc)
-		if len(h3Nodes) > 0 {
-			mu.Lock()
-			nodeMap["h3Nodes"] = h3Nodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of h4
-		l.Println("Collecting all h4...")
-		h4Nodes := filterH4Nodes(doc)
-
-		if len(h4Nodes) > 0 {
-			mu.Lock()
-			nodeMap["h4Nodes"] = h4Nodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of h5
-		l.Println("Collecting all h5...")
-		h5Nodes := filterH5Nodes(doc)
-		if len(h5Nodes) > 0 {
-			mu.Lock()
-			nodeMap["h5Nodes"] = h5Nodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of h6
-		l.Println("Collecting all h6...")
-		h6Nodes := filterH6Nodes(doc)
-		if len(h6Nodes) > 0 {
-			mu.Lock()
-			nodeMap["h6Nodes"] = h6Nodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		//List of image
-		l.Println("Collecting all images...")
-		imgNodes := filterImageNodes(doc)
-		if len(imgNodes) > 0 {
-			mu.Lock()
-			nodeMap["imgNodes"] = imgNodes
-			mu.Unlock()
-		}
-
-		wg.Done()
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all inputs...")
-		linkNodes := filterInputNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["inputNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all buttons...")
-		linkNodes := filterButtonNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["buttonNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all videos...")
-		linkNodes := filterVideoNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["videoNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all audio...")
-		linkNodes := filterAudioNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["audioNodes"] = linkNodes
-			mu.Unlock()
-
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all selects...")
-		linkNodes := filterSelectNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["selectNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all textareas...")
-		linkNodes := filterTextAreaNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["textareaNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all iframes...")
-		linkNodes := filterIframeNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["iframeNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all areas...")
-		linkNodes := filterAreaNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["areaNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all objects...")
-		linkNodes := filterObjectNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["objectNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all embeds...")
-		linkNodes := filterEmbedNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["embedNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all tracks...")
-		linkNodes := filterTrackNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["trackNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
-
-	wg.Add(1)
-	go func() {
-		l.Println("Collecting all applets...")
-		linkNodes := filterAppletNodes(doc)
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["appletNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
-
-	}()
+	wg.Add(23)
+	go getNode(FilterAnchorNodes, "anchorNodes", doc, l, nodeMap)
+	go getNode(filterDivNodes, "divNodes", doc, l, nodeMap)
+	go getNode(filterParaNodes, "paraNodes", doc, l, nodeMap)
+	go getNode(filterSpanNodes, "spanNodes", doc, l, nodeMap)
+	go getNode(filterH1Nodes, "h1Nodes", doc, l, nodeMap)
+	go getNode(filterH2Nodes, "h2Nodes", doc, l, nodeMap)
+	go getNode(filterH3Nodes, "h3Nodes", doc, l, nodeMap)
+	go getNode(filterH4Nodes, "h4Nodes", doc, l, nodeMap)
+	go getNode(filterH5Nodes, "h5Nodes", doc, l, nodeMap)
+	go getNode(filterH6Nodes, "h6Nodes", doc, l, nodeMap)
+	go getNode(filterImageNodes, "imgNodes", doc, l, nodeMap)
+	go getNode(filterInputNodes, "inputNodes", doc, l, nodeMap)
+	go getNode(filterButtonNodes, "buttonNodes", doc, l, nodeMap)
+	go getNode(filterVideoNodes, "videoNodes", doc, l, nodeMap)
+	go getNode(filterAudioNodes, "audioNodes", doc, l, nodeMap)
+	go getNode(filterSelectNodes, "selectNodes", doc, l, nodeMap)
+	go getNode(filterTextAreaNodes, "textareaNodes", doc, l, nodeMap)
+	go getNode(filterIframeNodes, "iframeNodes", doc, l, nodeMap)
+	go getNode(filterAreaNodes, "areaNodes", doc, l, nodeMap)
+	go getNode(filterObjectNodes, "objectNodes", doc, l, nodeMap)
+	go getNode(filterEmbedNodes, "embedNodes", doc, l, nodeMap)
+	go getNode(filterTrackNodes, "trackNodes", doc, l, nodeMap)
+	go getNode(filterAppletNodes, "appletNodes", doc, l, nodeMap)
 
 	wg.Add(1)
 	go func(base string) {
 		l.Println("Collecting all links...")
+		defer wg.Done()
 
-		//get all links
-		linkNodes := FilterLinkNodes(doc)
-		l.Printf("base link: %v", base)
+		if base != "" {
+			//get all links
+			linkNodes := FilterLinkNodes(doc)
+			l.Printf("base link: %v", base)
 
-		//collect CSS links
-		cssLinks := HrefLinks(filterCSSLinks(linkNodes), base, l)
-		for _, link := range cssLinks {
-			l.Println(link)
-			readCSSLinks(link, l)
+			//collect CSS links
+			cssLinks := HrefLinks(filterCSSLinks(linkNodes), base, l)
+			for _, link := range cssLinks {
+				l.Println(link)
+				readCSSLinks(link, l)
+			}
+
+			if len(linkNodes) > 0 {
+				mu.Lock()
+				nodeMap["linkNodes"] = linkNodes
+				mu.Unlock()
+			}
 		}
-
-		if len(linkNodes) > 0 {
-			mu.Lock()
-			nodeMap["linkNodes"] = linkNodes
-			mu.Unlock()
-		}
-		wg.Done()
 
 	}(base)
 
 	wg.Wait()
 	return nodeMap
 
+}
+
+//getNode function is a common function to retrieve the node
+func getNode(fn func(node *html.Node) []*html.Node, nodeName string, doc *html.Node, l *log.Logger, nodeMap map[string][]*html.Node) {
+	defer wg.Done()
+	l.Printf("Collecting all %v...", nodeName)
+	nodes := fn(doc)
+	if len(nodes) > 0 {
+		mu.Lock()
+		nodeMap[nodeName] = nodes
+		mu.Unlock()
+	}
 }

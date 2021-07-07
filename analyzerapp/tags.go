@@ -116,7 +116,7 @@ type Tracktag struct {
 	Wcag122G87 string
 }
 
-//Applettag is the track based rule results
+//Applettag is the applet based rule results
 type Applettag struct {
 	Applet    string
 	Wc121H96  string
@@ -124,4 +124,36 @@ type Applettag struct {
 	Wc111G94  string
 	Wc111H2   string
 	Wc111H35  string
+}
+
+//H1tag is the h1 based rule results
+type H1tag struct {
+	H1      string
+	Wcag241 string
+}
+
+//H2tag is the h2 based rule results
+type H2tag struct {
+	H2      string
+	Wcag241 string
+}
+
+//H3tag is the h3 based rule results
+type H3tag struct {
+	H3 string
+}
+
+//H4tag is the h4 based rule results
+type H4tag struct {
+	H4 string
+}
+
+//H5tag is the h5 based rule results
+type H5tag struct {
+	H5 string
+}
+
+//H6tag is the h6 based rule results
+type H6tag struct {
+	H6 string
 }

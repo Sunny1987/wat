@@ -8,9 +8,6 @@ import (
 //trackRulesWCAG121 will check all WCAG1.2.1 techniques
 func (d *Tracktag) trackRulesWCAG122(node *html.Node, l *log.Logger) {
 
-	// creating div object
-	d.Track = nodeText(node)
-
 	//H95
 	l.Println("Starting processing : H95")
 	apply, stat := H95(node)

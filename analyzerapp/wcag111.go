@@ -8,9 +8,6 @@ import (
 //divRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Divtag) divRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating div object
-	d.Div = nodeText(node)
-
 	//ARIA6
 	l.Println("Starting processing : ARIA6")
 	apply, stat := aria6(node)
@@ -41,9 +38,6 @@ func (d *Divtag) divRulesWCAG111(node *html.Node, l *log.Logger) {
 //buttonRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Buttontag) buttonRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating button object
-	d.Button = nodeText(node)
-
 	//ARIA6
 	apply, stat := aria6(node)
 	if apply == Applicable {
@@ -72,9 +66,6 @@ func (d *Buttontag) buttonRulesWCAG111(node *html.Node, l *log.Logger) {
 
 //inputRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Inputtag) inputRulesWCAG111(node *html.Node, l *log.Logger) {
-
-	// creating input object
-	d.Input = nodeText(node)
 
 	//ARIA6
 	apply, stat := aria6(node)
@@ -105,9 +96,6 @@ func (d *Inputtag) inputRulesWCAG111(node *html.Node, l *log.Logger) {
 //videoRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Videotag) videoRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating video object
-	d.Video = nodeText(node)
-
 	//ARIA6
 	apply, stat := aria6(node)
 	if apply == Applicable {
@@ -136,9 +124,6 @@ func (d *Videotag) videoRulesWCAG111(node *html.Node, l *log.Logger) {
 
 //audioRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Audiotag) audioRulesWCAG111(node *html.Node, l *log.Logger) {
-
-	// creating audio object
-	d.Audio = nodeText(node)
 
 	//ARIA6
 	apply, stat := aria6(node)
@@ -169,9 +154,6 @@ func (d *Audiotag) audioRulesWCAG111(node *html.Node, l *log.Logger) {
 //selectRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Selecttag) selectRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating select object
-	d.Select = nodeText(node)
-
 	//ARIA6
 	apply, stat := aria6(node)
 	if apply == Applicable {
@@ -201,9 +183,6 @@ func (d *Selecttag) selectRulesWCAG111(node *html.Node, l *log.Logger) {
 //textAreaRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Textareatag) textAreaRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating textarea object
-	d.Textarea = nodeText(node)
-
 	//ARIA6
 	apply, stat := aria6(node)
 	if apply == Applicable {
@@ -232,9 +211,6 @@ func (d *Textareatag) textAreaRulesWCAG111(node *html.Node, l *log.Logger) {
 
 //imagesRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Imgtag) imagesRulesWCAG111(node *html.Node, l *log.Logger) {
-
-	// creating image object
-	d.Img = nodeText(node)
 
 	//ARIA6
 	apply, stat := aria6(node)
@@ -288,9 +264,6 @@ func (d *Imgtag) imagesRulesWCAG111(node *html.Node, l *log.Logger) {
 //iframeRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Iframetag) iframeRulesWCAG111(node *html.Node, l *log.Logger) {
 
-	// creating iframe object
-	d.Iframe = nodeText(node)
-
 	//ARIA6
 	l.Println("Starting processing : ARIA6")
 	apply, stat := aria6(node)
@@ -320,9 +293,6 @@ func (d *Iframetag) iframeRulesWCAG111(node *html.Node, l *log.Logger) {
 
 //linkRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Anchortag) linkRulesWCAG111(node *html.Node, l *log.Logger) {
-
-	// creating link object
-	d.Anchor = nodeText(node)
 
 	//ARIA6
 	l.Println("Starting processing : ARIA6")
@@ -355,9 +325,6 @@ func (d *Anchortag) linkRulesWCAG111(node *html.Node, l *log.Logger) {
 
 //areaRulesWCAG111 will check all WCAG1.1.1 techniques
 func (d *Areatag) areaRulesWCAG111(node *html.Node, l *log.Logger) {
-
-	// creating link object
-	d.Area = nodeText(node)
 
 	//G94
 	l.Println("Start processing : G94 ")

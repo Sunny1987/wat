@@ -61,6 +61,9 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 func (n *NewLogger) FileScan(rw http.ResponseWriter, r *http.Request) {
 	n.l.Println("******** Starting file upload*****")
 
+	//track execution time for scan
+	timeStart := time.Now()
+
 	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		http.Error(rw, "Error max file size exceeded", http.StatusBadRequest)
@@ -78,14 +81,6 @@ func (n *NewLogger) FileScan(rw http.ResponseWriter, r *http.Request) {
 	n.l.Printf("File Size: %+v\n", handler.Size)
 	n.l.Printf("MIME Header: %+v\n", handler.Header)
 
-	//fileBytes, err := ioutil.ReadAll(file)
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-	//
-	//n.l.Println(string(fileBytes))
-	//
-	////setup req object
 	reqMod := &MyURLReq{}
 	reqMod.URLFromReq = ""
 	reqMod.MaxDepth = 0
@@ -101,5 +96,7 @@ func (n *NewLogger) FileScan(rw http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		n.l.Printf("Error : %v", err)
 	}
+
+	n.l.Printf("Query completed in %v\n", time.Since(timeStart))
 
 }

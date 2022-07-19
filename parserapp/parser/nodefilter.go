@@ -112,9 +112,14 @@ func filterTrackNodes(n *html.Node) []*html.Node {
 	return filterNode(n, isTrack)
 }
 
-//filterAppletNodes will give the list of tracks
+//filterAppletNodes will give the list of applet
 func filterAppletNodes(n *html.Node) []*html.Node {
 	return filterNode(n, isApplet)
+}
+
+//filterPreNodes will give the list of pre
+func filterPreNodes(n *html.Node) []*html.Node {
+	return filterNode(n, isPre)
 }
 
 //filterCSSLinks will filter all the CSS based links

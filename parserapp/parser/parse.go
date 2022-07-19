@@ -37,7 +37,7 @@ func collectNodes(doc *html.Node, l *log.Logger, base string) map[string][]*html
 	//List of link nodes
 	nodeMap := make(map[string][]*html.Node)
 
-	wg.Add(23)
+	wg.Add(24)
 	go getNode(FilterAnchorNodes, "anchorNodes", doc, l, nodeMap)
 	go getNode(filterDivNodes, "divNodes", doc, l, nodeMap)
 	go getNode(filterParaNodes, "paraNodes", doc, l, nodeMap)
@@ -61,12 +61,14 @@ func collectNodes(doc *html.Node, l *log.Logger, base string) map[string][]*html
 	go getNode(filterEmbedNodes, "embedNodes", doc, l, nodeMap)
 	go getNode(filterTrackNodes, "trackNodes", doc, l, nodeMap)
 	go getNode(filterAppletNodes, "appletNodes", doc, l, nodeMap)
+	go getNode(filterPreNodes, "preNodes", doc, l, nodeMap)
 
 	wg.Add(1)
 	go func(base string) {
 		l.Println("Collecting all links...")
 		defer wg.Done()
-
+		//var cssLinks []string
+		//cssLinks = nil
 		if base != "" {
 			//get all links
 			linkNodes := FilterLinkNodes(doc)

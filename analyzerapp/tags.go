@@ -37,6 +37,7 @@ type Imgtag struct {
 	Wc111Aria10 string
 	Wc111G94    string
 	Wc111H2     string
+	Wc111Aria15 string
 }
 
 //Inputtag is the input based rule results
@@ -156,4 +157,14 @@ type H5tag struct {
 //H6tag is the h6 based rule results
 type H6tag struct {
 	H6 string
+}
+
+//Pretag is the Pre based rule results
+type Pretag struct {
+	Pre      string
+	Wc111H86 string
+}
+type CSS struct {
+	CSS      string
+	WC111H86 string
 }

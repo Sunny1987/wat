@@ -145,14 +145,19 @@ func isEmbed(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "embed"
 }
 
-//isTrack will validate an embed tag
+//isTrack will validate an track tag
 func isTrack(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "track"
 }
 
-//isApplet will validate an embed tag
+//isApplet will validate an applet tag
 func isApplet(n *html.Node) bool {
 	return n.Type == html.ElementNode && n.Data == "applet"
+}
+
+//isPre will validate pre tag
+func isPre(n *html.Node) bool {
+	return n.Type == html.ElementNode && n.Data == "pre"
 }
 
 func isCSSLink(n *html.Node) bool {
@@ -190,15 +195,29 @@ func HrefLinks(linkNodes []*html.Node, base string, l *log.Logger) []string {
 		//log.Printf("href : %v",href)
 		switch {
 		case strings.HasPrefix(href, "/"):
-			hrefs = append(hrefs, base+href)
+			if !containsData(hrefs, base+href) {
+				hrefs = append(hrefs, base+href)
+			}
 		case strings.HasPrefix(href, "http"):
-			hrefs = append(hrefs, href)
+			if !containsData(hrefs, href) {
+				hrefs = append(hrefs, href)
+			}
 		}
 	}
 
 	//wg.Wait()
 	l.Println("***Completed formatting the link nodes****")
 	return hrefs
+}
+
+//containsData checks redundancy in cssList
+func containsData(l []string, val string) bool {
+	for _, str := range l {
+		if str == val {
+			return true
+		}
+	}
+	return false
 }
 
 func readCSSLinks(link string, l *log.Logger) {

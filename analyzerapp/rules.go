@@ -32,7 +32,7 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node, cssList []st
 	//Add the credential Details
 	ruleResults.Person = l.person
 
-	wg.Add(21)
+	wg.Add(23)
 	go ruleResults.divAnalysis(l.l, nodeMap)
 	go ruleResults.buttonAnalysis(l.l, nodeMap)
 	go ruleResults.inputAnalysis(l.l, nodeMap)
@@ -54,14 +54,12 @@ func (l *MyAnalysisLog) ApplyRules(nodeMap map[string][]*html.Node, cssList []st
 	go ruleResults.h5Analysis(l.l, nodeMap)
 	go ruleResults.h6Analysis(l.l, nodeMap)
 	go ruleResults.paraAnalysis(l.l, nodeMap)
+	go ruleResults.preAnalysis(l.l, nodeMap)
+	go ruleResults.cssAnalysis(l.l, cssList, nodeMap)
 
-	//css analysis
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cssAnalysis(l.l, cssList)
-	}()
 	wg.Wait()
+	//cssList = nil
+	//nodeMap = nil
 	return ruleResults
 }
 
@@ -365,11 +363,24 @@ func (resp *Response) trackAnalysis(l *log.Logger, nodeMap map[string][]*html.No
 }
 
 //cssAnalysis function initiates all the CSS rule based analysis
-func cssAnalysis(l *log.Logger, cssLink []string) {
+func (resp *Response) cssAnalysis(l *log.Logger, cssLink []string, nodeMap map[string][]*html.Node) {
 	l.Println("Initiating track tag Analysis......")
+	defer wg.Done()
+	var list []CSS
+	nodes := nodeMap["divNodes"]
 	for _, css := range cssLink {
 		l.Printf("CSS : %v ", css)
+		var tag CSS
+
+		//add css data
+		tag.CSS = css
+
+		//implement rule
+		tag.cssAnalysisWCAG111(css, l, nodes)
+
 	}
+
+	resp.CSSResults = list
 }
 
 //h1Analysis function initiates all the h1 rule based analysis
@@ -519,4 +530,26 @@ func (resp *Response) paraAnalysis(l *log.Logger, nodeMap map[string][]*html.Nod
 
 	}
 	resp.ParaResults = list
+}
+
+//preAnalysis function initiates all the pre rule based analysis
+func (resp *Response) preAnalysis(l *log.Logger, nodeMap map[string][]*html.Node) {
+	l.Println("Initiating pre tag Analysis......")
+	defer wg.Done()
+	nodes := nodeMap["preNodes"]
+	var list []Pretag
+
+	for _, node := range nodes {
+		var tag Pretag
+
+		//build the node
+		tag.Pre = nodeText(node)
+
+		//implement the rule
+		tag.preRulesWCAG111(node, l)
+
+		list = append(list, tag)
+
+	}
+	resp.PreResults = list
 }

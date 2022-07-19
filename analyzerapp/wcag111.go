@@ -3,6 +3,7 @@ package analyzerapp
 import (
 	"golang.org/x/net/html"
 	"log"
+	"strings"
 )
 
 //divRulesWCAG111 will check all WCAG1.1.1 techniques
@@ -259,6 +260,18 @@ func (d *Imgtag) imagesRulesWCAG111(node *html.Node, l *log.Logger) {
 	} else {
 		d.Wc111H2 = apply
 	}
+	//ARIA15
+	l.Println("Start processing : ARIA15")
+	if apply, stat := ARIA15(node); apply == Applicable {
+		if stat {
+			d.Wc111Aria15 = "fail"
+		} else {
+			d.Wc111Aria15 = "pass"
+		}
+	} else {
+		d.Wc111Aria15 = apply
+	}
+
 }
 
 //iframeRulesWCAG111 will check all WCAG1.1.1 techniques
@@ -412,6 +425,44 @@ func (d *Embedtag) embedRulesWCAG111(node *html.Node, l *log.Logger) {
 
 }
 
+//preRulesWCAG111 will check all WCAG1.1.1 techniques
+func (d *Pretag) preRulesWCAG111(node *html.Node, l *log.Logger) {
+
+	// creating link object
+	d.Pre = nodeText(node)
+
+	//H86 implementation
+	l.Println("Starting processing : H86")
+	if apply, stat := H86(node); apply == Applicable {
+		if stat {
+			d.Wc111H86 = "pass"
+		} else {
+			d.Wc111H86 = "fail"
+		}
+	} else {
+		d.Wc111H86 = apply
+	}
+
+}
+
+func (c *CSS) cssAnalysisWCAG111(css string, l *log.Logger, nodes []*html.Node) {
+
+	//H86 implementation
+	l.Println("Starting processing : H86")
+	for _, node := range nodes {
+		if apply, stat := H86CSS(css, node); apply == Applicable {
+			if stat {
+				c.WC111H86 = "pass"
+			} else {
+				c.WC111H86 = "fail"
+			}
+		} else {
+			c.WC111H86 = apply
+		}
+	}
+
+}
+
 /********************************************/
 // WCAG2.0 1.1.1 techniques
 /********************************************/
@@ -520,6 +571,46 @@ func H53(node *html.Node) (string, bool) {
 			}
 		}
 
+	}
+	return NA, false
+}
+
+//ARIA15 for Image based implementation
+func ARIA15(node *html.Node) (string, bool) {
+	if attributeSearch(node.Attr, "aria-describedby") {
+		if attributeCheckValEmpty(node.Attr, "aria-describedby") {
+			return Applicable, true
+		} else {
+			return Applicable, false
+		}
+	} else {
+		return NA, false
+	}
+}
+
+//H86 for pre based implementation
+func H86(node *html.Node) (string, bool) {
+	if attributeSearch(node.Attr, "alt") {
+		return Applicable, true
+	} else {
+		return Applicable, false
+	}
+}
+
+//H86CSS update
+func H86CSS(css string, node *html.Node) (string, bool) {
+	if strings.Contains(css, "white-space: pre") {
+		name := strings.Split(css, " ")
+		className := strings.Trim(name[0], "@")
+		if attributeCheckVal(node.Attr, "class", className) {
+			if attributeSearch(node.Attr, "alt") {
+				return Applicable, true
+			} else {
+				return Applicable, false
+			}
+		} else {
+			return Applicable, false
+		}
 	}
 	return NA, false
 }

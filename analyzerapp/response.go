@@ -25,4 +25,6 @@ type Response struct {
 	H4Results       []H4tag       `json:"h4s"`
 	H5Results       []H5tag       `json:"h5s"`
 	H6Results       []H6tag       `json:"h6s"`
+	PreResults      []Pretag      `json:"pres"`
+	CSSResults      []CSS         `json:"CSS"`
 }

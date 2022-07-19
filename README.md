@@ -7,7 +7,7 @@ The repo is deployed in heroku platform. The services can be currently availed f
 *****************************************
 **To login using guest credentials:**
 
-POST https://watsab.herokuapp.com/login
+POST https://watprod.herokuapp.com/login
 
 body:
 {
@@ -17,7 +17,7 @@ body:
 *****************************************
 **To run accessibility scan:**
 
-POST https://watsab.herokuapp.com/scan
+POST https://watprod.herokuapp.com/scan
 
 body:
 {
@@ -27,12 +27,12 @@ body:
 *****************************************
 **To Check Last 10 scans** 
 
-GET https://watsab.herokuapp.com/getscans
+GET https://watprod.herokuapp.com/getscans
 
 *****************************************
 **To upload a html file for scan**
 
-POST https://watsab.herokuapp.com/uploadhtml
+POST https://watprod.herokuapp.com/uploadhtml
 *****************************************
 
 Improvements:

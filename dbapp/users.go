@@ -2,12 +2,14 @@ package dbapp
 
 import (
 	"encoding/json"
-	"github.com/go-resty/resty/v2"
 	"log"
+
+	"github.com/go-resty/resty/v2"
 )
 
 var (
-	GetAllUsers               = "https://pgserv.herokuapp.com/users"
+	//GetAllUsers               = "https://pgserv.herokuapp.com/users"
+	GetAllUsers               = PGserverURL +"/users"
 	Client      *resty.Client = resty.New()
 )
 

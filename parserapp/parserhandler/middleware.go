@@ -215,7 +215,7 @@ func startScan(req *MyURLReq, l *log.Logger, base string) analyzerapp.Response {
 	if req.File == nil {
 		resp, err := http.Get(req.URLFromReq)
 		if err != nil {
-			l.Printf("Error fetching URL response", err)
+			l.Print("Error fetching URL response", err)
 		}
 		defer resp.Body.Close()
 

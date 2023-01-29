@@ -8,9 +8,13 @@ import (
 )
 
 var (
-	GetAllScansURL = "https://pgserv.herokuapp.com/scans"
-	DeleteScanURL  = "https://pgserv.herokuapp.com/deletescan/"
-	AddScanURL     = "https://pgserv.herokuapp.com/addscan"
+	PGserverURL = "https://pgserv.onrender.com"
+	//GetAllScansURL = "https://pgserv.herokuapp.com/scans"
+	//DeleteScanURL  = "https://pgserv.herokuapp.com/deletescan/"
+	//AddScanURL     = "https://pgserv.herokuapp.com/addscan"
+	GetAllScansURL = PGserverURL + "/scans"
+	DeleteScanURL  = PGserverURL + "/deletescan/"
+	AddScanURL     = PGserverURL + "/addscan"
 )
 
 //Result will provide the list of scans from database pgserv

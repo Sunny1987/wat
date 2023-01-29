@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/go-playground/validator"
 	"log"
 	"net/http"
 	"strings"
 	"webparser/analyzerapp"
 	"webparser/dbapp"
 	"webparser/parserapp/parser"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/go-playground/validator"
 )
 
 type KeyUser struct{}
@@ -106,7 +107,7 @@ func PrintResponse(results []analyzerapp.Response, rw http.ResponseWriter, l *lo
 	scanmap := make(map[int]int)
 
 	//max retention count in db
-	maxRetention := 10
+	maxRetention := 2
 
 	if len(scanResultDB) > 0 {
 		countRecs := 0

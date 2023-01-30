@@ -23,6 +23,7 @@ var scanResultDB dbapp.Result
 //MiddlewareValidation will validate incoming request and authentication before scan
 func (n *NewLogger) MiddlewareValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		//rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000/")
 		n.l.Println("*****Entering middleware******")
 
 		switch r.URL.Path {

@@ -2,15 +2,16 @@ package main
 
 import (
 	"context"
-	"github.com/common-nighthawk/go-figure"
-	goHandlers "github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 	"webparser/parserapp/parserhandler"
+
+	"github.com/common-nighthawk/go-figure"
+	goHandlers "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -36,8 +37,12 @@ func main() {
 	getRouter.Use(parseHandler.MiddlewareValidation)
 
 	//CORS
-	ch := goHandlers.CORS(goHandlers.AllowedOrigins([]string{"*"}))
-
+	ch := goHandlers.CORS(
+		goHandlers.AllowedOrigins([]string{"http://localhost:3000/"}),
+		goHandlers.AllowedHeaders([]string{"Authorization"}),
+		goHandlers.AllowedMethods([]string{"GET", "POST"}),
+	)
+	//serverMux.Use(mux.CORSMethodMiddleware(serverMux))
 	//heroku related updates
 	//port = ":" + port
 

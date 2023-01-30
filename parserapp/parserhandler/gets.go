@@ -21,7 +21,7 @@ func GetNewLogger(l *log.Logger) *NewLogger {
 
 //GetUserBasedScans will return the list of saved scans for the user
 func (n *NewLogger) GetUserBasedScans(rw http.ResponseWriter, r *http.Request) {
-
+	//rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	n.l.Println("******* Fetching the scans******")
 	//track execution time for scan
 	timeStart := time.Now()

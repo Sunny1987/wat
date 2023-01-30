@@ -2,10 +2,11 @@ package parserhandler
 
 import (
 	"encoding/json"
-	"github.com/dgrijalva/jwt-go"
 	"net/http"
 	"time"
 	"webparser/dbapp"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 //authentication variables
@@ -31,6 +32,7 @@ var Credential Credentials
 
 //Login method will verify the credentials for usage
 func (n *NewLogger) Login(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000/")
 	n.l.Println("Starting login analysis...")
 
 	//get the users list

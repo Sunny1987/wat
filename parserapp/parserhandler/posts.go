@@ -14,6 +14,7 @@ var wg sync.WaitGroup
 
 //GetURLResp will return the WCAG2.1 guidelines result for a URL
 func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
+	//rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 
 	//track execution time for scan
 	timeStart := time.Now()
@@ -59,6 +60,7 @@ func (n *NewLogger) GetURLResp(rw http.ResponseWriter, r *http.Request) {
 
 //FileScan will upload an HTML file for test
 func (n *NewLogger) FileScan(rw http.ResponseWriter, r *http.Request) {
+	//rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000/")
 	n.l.Println("******** Starting file upload*****")
 
 	//track execution time for scan
